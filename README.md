@@ -8,6 +8,16 @@
 
 - `PRD-个人博客网站.md`：个人博客网站 PRD 与技术选型记录
 
+## 本地开发
+
+请在 WSL 项目目录 `/home/cheng/projects/personal-blog` 中运行：
+
+```bash
+npm install
+npm run dev
+npm run build
+```
+
 ## 当前原则
 
 - 先本地开发，后续再考虑是否上云。
