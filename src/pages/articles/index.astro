@@ -2,9 +2,9 @@
 import { getCollection } from 'astro:content';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 
-const posts = (await getCollection('posts')).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
+const posts = (await getCollection('posts'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const categories = ['全部文章', 'AI / Agent', 'RPA / 自动化', '编程笔记', 'Markdown / MDX', '架构图示例'];
 ---
 

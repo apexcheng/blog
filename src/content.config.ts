@@ -12,6 +12,8 @@ const posts = defineCollection({
     tags: z.array(z.string()),
     minutes: z.number(),
     featured: z.boolean().default(false),
+    draft: z.boolean().default(false),
+    private: z.boolean().default(false),
   }),
 });
 
