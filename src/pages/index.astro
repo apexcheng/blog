@@ -1,0 +1,121 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectCard from '../components/ProjectCard.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { projects } from '../data/projects';
+
+const posts = (await getCollection('posts')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const featuredPost = posts.find((post) => post.data.featured) ?? posts[0];
+const sidePosts = posts.filter((post) => post.id !== featuredPost.id).slice(0, 3);
+---
+
+<SiteLayout active="home">
+  <main class="page-content">
+    <section class="hero-grid">
+      <div>
+        <p class="eyebrow">AI Automation · RPA · Engineering Notes</p>
+        <h1>记录 AI、自动化与编程实践的个人技术博客</h1>
+        <p class="hero-lead">
+          这里不是企业官网，而是一张持续更新的工作台：沉淀文章、项目记录、架构图、流程图、代码片段，以及把复杂问题讲清楚的实践笔记。
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="/articles/">开始阅读</a>
+          <a class="button" href="/projects/">查看项目记录</a>
+        </div>
+        <div class="stats-row" aria-label="站点统计">
+          <span><b>{posts.length}</b>技术文章</span>
+          <span><b>{projects.length}</b>项目复盘</span>
+          <span><b>4</b>主要主题</span>
+        </div>
+      </div>
+      <aside class="terminal-panel" aria-label="技术笔记示意">
+        <div class="terminal-head">
+          <i class="dot red"></i>
+          <i class="dot yellow"></i>
+          <i class="dot green"></i>
+          <span>notes/workflow.md</span>
+        </div>
+        <div class="terminal-body">
+          <p><span class="prompt">$</span> build personal knowledge system</p>
+          <p><span class="token">focus</span>: <span class="string">reading, diagrams, code</span></p>
+          <p><span class="token">topics</span>: AI Agents · RPA · Python · MDX</p>
+          <p class="comment"># Mermaid / architecture / automation cases</p>
+          <div class="mini-diagram">
+            <b>Automation Pipeline</b>
+            <div>
+              <span>Input</span>
+              <span>Agent</span>
+              <span>Result</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section-block">
+      <div class="section-head">
+        <div>
+          <h2>从这些方向开始</h2>
+          <p>按长期内容主题组织，避免首页变成杂乱文章流。</p>
+        </div>
+        <a href="/articles/">全部主题</a>
+      </div>
+      <div class="topic-grid">
+        <a class="topic-card" href="/articles/"><span>AI</span><h3>AI / Agent</h3><p>Agent 工作流、提示词、工具调用、AI 应用实践。</p></a>
+        <a class="topic-card" href="/articles/"><span>RP</span><h3>RPA / 自动化</h3><p>网页自动化、流程编排、Excel 处理与效率工具。</p></a>
+        <a class="topic-card" href="/projects/"><span>PJ</span><h3>项目展示</h3><p>把真实项目拆成背景、方案、实现和复盘。</p></a>
+        <a class="topic-card" href="/guides/mdx-content/"><span>MD</span><h3>教程 / 指南</h3><p>可复用的开发笔记、配置经验和排错路线。</p></a>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-head">
+        <div>
+          <h2>精选文章</h2>
+          <p>用少量高质量内容建立第一印象。</p>
+        </div>
+        <a href="/articles/">查看文章库</a>
+      </div>
+      <div class="feature-grid">
+        <article class="featured-card">
+          <span class="pill">Featured · {featuredPost.data.category}</span>
+          <h3><a href={`/articles/${featuredPost.slug}/`}>{featuredPost.data.title}</a></h3>
+          <p>{featuredPost.data.description}</p>
+          <div class="meta-row">
+            <span>{featuredPost.data.minutes} min read</span>
+            <span>{featuredPost.data.date.toISOString().slice(0, 10)}</span>
+            <span>{featuredPost.data.tags[0]}</span>
+          </div>
+          <pre class="code-preview"><code>// readable first, abstraction later
+agent.run(task)
+if result.needs_review:
+  notify_user(result.summary)</code></pre>
+        </article>
+        <div class="article-row-list">
+          {sidePosts.map((post) => (
+            <article>
+              <small>{post.data.category}</small>
+              <h3><a href={`/articles/${post.slug}/`}>{post.data.title}</a></h3>
+              <p>{post.data.description}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-head">
+        <div>
+          <h2>项目记录</h2>
+          <p>用 case study 的方式展示能力，不做夸张作品集。</p>
+        </div>
+        <a href="/projects/">全部项目</a>
+      </div>
+      <div class="project-grid">
+        {projects.slice(0, 3).map((project, index) => <ProjectCard project={project} index={index} />)}
+      </div>
+    </section>
+  </main>
+</SiteLayout>

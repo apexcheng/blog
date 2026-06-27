@@ -1,0 +1,32 @@
+---
+interface Props {
+  title?: string;
+  caption?: string;
+  chart: string;
+}
+
+const { title, caption, chart } = Astro.props;
+---
+
+<figure class="mermaid-card">
+  {title && <figcaption class="mermaid-title">{title}</figcaption>}
+  <pre class="mermaid">{chart}</pre>
+  {caption && <p class="mermaid-caption">{caption}</p>}
+</figure>
+
+<script>
+  import mermaid from 'mermaid';
+
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#ffffff',
+      primaryTextColor: '#111827',
+      primaryBorderColor: '#cbd5e1',
+      lineColor: '#64748b',
+      secondaryColor: '#eef6ff',
+      tertiaryColor: '#f8fafc',
+    },
+  });
+</script>

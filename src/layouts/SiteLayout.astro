@@ -1,0 +1,49 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  active?: 'home' | 'articles' | 'projects' | 'guides';
+  description?: string;
+}
+
+const {
+  title = 'Cheng Notes',
+  active = 'home',
+  description = '记录 AI、自动化与编程实践的个人技术博客',
+} = Astro.props;
+
+const pageTitle = title === 'Cheng Notes' ? title : `${title} | Cheng Notes`;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="/" aria-label="Cheng Notes 首页">
+          <span class="brand-mark">C</span>
+          <span>Cheng Notes</span>
+        </a>
+        <nav class="site-nav" aria-label="主导航">
+          <a class:list={[active === 'home' && 'active']} href="/">Home</a>
+          <a class:list={[active === 'articles' && 'active']} href="/articles/">AI / Agent</a>
+          <a href="/articles/">RPA</a>
+          <a class:list={[active === 'projects' && 'active']} href="/projects/">Projects</a>
+          <a class:list={[active === 'guides' && 'active']} href="/guides/mdx-content/">Guides</a>
+          <a href="/about/">About</a>
+        </nav>
+        <button class="theme-button" type="button" aria-label="主题切换占位">◐</button>
+      </header>
+      <div data-pagefind-body>
+        <slot />
+      </div>
+    </div>
+  </body>
+</html>

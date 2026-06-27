@@ -1,0 +1,26 @@
+---
+title: MDX 内容展示
+description: 代码块、Callout 和 Mermaid 图表的展示示例。
+---
+
+import Callout from '../../../components/Callout.astro';
+import Mermaid from '../../../components/Mermaid.astro';
+
+这页保留给 Starlight 文档区，后续可以放更系统的教程和图表示例。
+
+<Callout title="内容原则">
+图表用于降低理解成本，不为了装饰硬加。
+</Callout>
+
+```python
+def load_cache(file_path):
+    data = read_json(file_path)
+    return data
+```
+
+<Mermaid
+  title="Docs Flow"
+  chart={`flowchart LR
+    A[Markdown] --> B[MDX]
+    B --> C[Static Site]`}
+/>

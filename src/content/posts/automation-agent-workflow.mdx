@@ -1,0 +1,51 @@
+---
+title: 如何设计一个可维护的自动化 Agent 工作流
+description: 先让流程可读、失败点可见，再考虑抽象和复用。
+date: 2026-06-18
+category: AI / Workflow
+tags:
+  - Agent
+  - Automation
+  - MDX
+minutes: 12
+featured: true
+---
+
+import Callout from '../../components/Callout.astro';
+import Mermaid from '../../components/Mermaid.astro';
+
+## 任务拆解
+
+自动化项目最容易失控的地方，是把输入、工具、输出、人工确认和失败处理混在一起。第一步不是抽象，而是把这些节点按顺序摊开。
+
+<Callout>
+核心原则：复杂逻辑可以存在，但状态变化和失败边界必须显式。
+</Callout>
+
+## 工具边界
+
+工具只做确定的动作，模型负责判断和组织上下文。对于网页自动化、表格写入、文件落盘这类操作，应该让结果可验证。
+
+```python
+# keep the flow explicit
+result = agent.run(task)
+if result.needs_review:
+    notify_user(result.summary)
+save_run_log(result)
+```
+
+## 流程图展示
+
+文章中的 Mermaid 或架构图要放在有边界的容器里，图表下方可以保留简短说明，避免长文阅读时丢失上下文。
+
+<Mermaid
+  title="Automation Pipeline"
+  caption="输入、工具调用、结果确认三个节点保持可追踪。"
+  chart={`flowchart LR
+    A[Input] --> B[Agent]
+    B --> C[Result]`}
+/>
+
+## 失败处理
+
+不要吞异常，不要隐藏副作用。逐项处理就逐项保存，整批处理就批量末尾保存，让失败隔离粒度和落盘时机一致。

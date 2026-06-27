@@ -1,0 +1,27 @@
+---
+import ProjectCard from '../components/ProjectCard.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { projects } from '../data/projects';
+---
+
+<SiteLayout title="项目记录" active="projects">
+  <main class="page-content">
+    <section class="project-hero">
+      <div>
+        <p class="eyebrow">Projects</p>
+        <h1 class="page-title">项目记录</h1>
+        <p class="page-lead">
+          这里展示的不是夸张作品集，而是可复盘的实践记录：背景、方案、实现、图表和踩坑。适合放 AI/RPA/编程相关的小项目和长期维护项目。
+        </p>
+      </div>
+      <aside class="project-summary">
+        <b>{projects.length}</b>
+        <h2>项目复盘</h2>
+        <p>每个项目建议包含：目标、输入输出、关键流程图、技术选择、结果和后续改进。</p>
+      </aside>
+    </section>
+    <section class="project-grid project-page-grid">
+      {projects.map((project, index) => <ProjectCard project={project} index={index} />)}
+    </section>
+  </main>
+</SiteLayout>

@@ -1,0 +1,45 @@
+---
+import { getCollection, render } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+---
+
+<SiteLayout title={post.data.title} active="articles" description={post.data.description}>
+  <main class="page-content article-shell">
+    <aside class="article-info">
+      <h2>文章信息</h2>
+      <p>{post.data.category}</p>
+      <p>{post.data.date.toISOString().slice(0, 10)}</p>
+      <p>{post.data.minutes} min read</p>
+      <div class="chips">
+        {post.data.tags.map((tag) => <span>{tag}</span>)}
+      </div>
+    </aside>
+    <article class="article-content">
+      <span class="pill">{post.data.category}</span>
+      <h1>{post.data.title}</h1>
+      <p class="article-description">{post.data.description}</p>
+      <div class="meta-row">
+        <span>Written by Cheng</span>
+        <span>Updated {post.data.date.toISOString().slice(0, 10)}</span>
+      </div>
+      <Content />
+    </article>
+    <aside class="toc-panel">
+      <h2>On this page</h2>
+      {headings.filter((heading) => heading.depth === 2).map((heading) => (
+        <a href={`#${heading.slug}`}>{heading.text}</a>
+      ))}
+    </aside>
+  </main>
+</SiteLayout>
