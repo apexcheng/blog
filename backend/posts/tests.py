@@ -195,3 +195,133 @@ featured: false
         call_command("import_posts")
 
         self.assertTrue(Post.objects.filter(slug="automation-agent-workflow").exists())
+
+
+class ExportPostsCommandTests(TestCase):
+    def setUp(self):
+        self.category = Category.objects.create(name="Python", slug="python")
+        self.tag = Tag.objects.create(name="Django", slug="django")
+
+    def test_exports_one_public_post(self):
+        post = Post.objects.create(
+            title="导出文章",
+            slug="export-post",
+            description="导出文章摘要",
+            date="2026-06-28",
+            category=self.category,
+            minutes=6,
+            featured=True,
+            body="## 正文\n\n这里是正文。",
+        )
+        post.tags.add(self.tag)
+
+        with TemporaryDirectory() as posts_dir:
+            call_command("export_posts", posts_dir=posts_dir)
+            text = Path(posts_dir, "export-post.md").read_text(encoding="utf-8")
+
+        self.assertIn("title: 导出文章", text)
+        self.assertIn("description: 导出文章摘要", text)
+        self.assertIn("date: 2026-06-28", text)
+        self.assertIn("category: Python", text)
+        self.assertIn("tags:\n  - Django", text)
+        self.assertIn("minutes: 6", text)
+        self.assertIn("featured: true", text)
+        self.assertIn("draft: false", text)
+        self.assertIn("private: false", text)
+        self.assertTrue(text.endswith("## 正文\n\n这里是正文。\n"))
+
+    def test_exports_to_existing_mdx_file_without_creating_md_file(self):
+        Post.objects.create(
+            title="MDX 文章",
+            slug="mdx-post",
+            description="MDX 摘要",
+            date="2026-06-28",
+            category=self.category,
+            minutes=5,
+            body="import Callout from '../../components/Callout.astro';\n\n<Callout>正文</Callout>",
+        )
+
+        with TemporaryDirectory() as posts_dir:
+            Path(posts_dir, "mdx-post.mdx").write_text("old content", encoding="utf-8")
+
+            call_command("export_posts", posts_dir=posts_dir)
+            text = Path(posts_dir, "mdx-post.mdx").read_text(encoding="utf-8")
+
+            self.assertIn("title: MDX 文章", text)
+            self.assertIn("<Callout>正文</Callout>", text)
+            self.assertFalse(Path(posts_dir, "mdx-post.md").exists())
+
+    def test_exports_empty_tags_as_empty_list(self):
+        Post.objects.create(
+            title="无标签文章",
+            slug="no-tags",
+            description="无标签摘要",
+            date="2026-06-28",
+            category=self.category,
+            minutes=4,
+            body="正文",
+        )
+
+        with TemporaryDirectory() as posts_dir:
+            call_command("export_posts", posts_dir=posts_dir)
+            text = Path(posts_dir, "no-tags.md").read_text(encoding="utf-8")
+
+        self.assertIn("tags: []", text)
+        self.assertNotIn("tags:\nminutes", text)
+
+    def test_does_not_export_draft_by_default(self):
+        Post.objects.create(
+            title="草稿文章",
+            slug="draft-post",
+            description="草稿摘要",
+            date="2026-06-28",
+            category=self.category,
+            minutes=3,
+            draft=True,
+            body="草稿正文",
+        )
+
+        with TemporaryDirectory() as posts_dir:
+            call_command("export_posts", posts_dir=posts_dir)
+
+            self.assertFalse(Path(posts_dir, "draft-post.md").exists())
+
+    def test_exports_draft_when_include_drafts_is_passed(self):
+        Post.objects.create(
+            title="草稿文章",
+            slug="draft-post",
+            description="草稿摘要",
+            date="2026-06-28",
+            category=self.category,
+            minutes=3,
+            draft=True,
+            body="草稿正文",
+        )
+
+        with TemporaryDirectory() as posts_dir:
+            call_command("export_posts", posts_dir=posts_dir, include_drafts=True)
+            text = Path(posts_dir, "draft-post.md").read_text(encoding="utf-8")
+
+        self.assertIn("draft: true", text)
+        self.assertIn("草稿正文", text)
+
+    def test_private_post_export_does_not_include_password(self):
+        Post.objects.create(
+            title="私密文章",
+            slug="private-post",
+            description="私密摘要",
+            date="2026-06-28",
+            category=self.category,
+            minutes=8,
+            private=True,
+            password="secret",
+            body="私密正文",
+        )
+
+        with TemporaryDirectory() as posts_dir:
+            call_command("export_posts", posts_dir=posts_dir)
+            text = Path(posts_dir, "private-post.md").read_text(encoding="utf-8")
+
+        self.assertIn("private: true", text)
+        self.assertNotIn("password", text)
+        self.assertNotIn("secret", text)

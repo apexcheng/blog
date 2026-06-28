@@ -77,6 +77,50 @@ python3 backend/manage.py import_posts
 python3 backend/manage.py import_posts --posts-dir /path/to/posts
 ```
 
+## 导出文章
+
+把 Django 数据库中的文章导出回 `src/content/posts/`：
+
+```bash
+cd /home/cheng/projects/personal-blog
+python3 backend/manage.py export_posts
+```
+
+默认只导出非 draft 文章。需要连同草稿一起导出时运行：
+
+```bash
+python3 backend/manage.py export_posts --include-drafts
+```
+
+测试或临时导出到其他目录时可以指定：
+
+```bash
+python3 backend/manage.py export_posts --posts-dir /path/to/posts
+```
+
+导出规则：
+
+- 如果已存在同 slug 的 `.mdx` 文件，优先覆盖 `.mdx`。
+- 否则如果已存在同 slug 的 `.md` 文件，覆盖 `.md`。
+- 如果同 slug 文件不存在，新建 `{slug}.md`。
+- frontmatter 对齐当前 Astro posts schema。
+- 不导出 password 字段。
+- body 保留数据库中的 Markdown / MDX 原文，不做渲染。
+
+## 第一阶段发布流程
+
+当前阶段仍然保留 Astro 静态前台，不让 Astro 页面直接请求 Django API。建议流程是：
+
+```bash
+python3 backend/manage.py import_posts
+python3 backend/manage.py runserver
+# 在 Django Admin 中编辑文章
+python3 backend/manage.py export_posts
+npm run build
+```
+
+也就是说：Django Admin 负责编辑，`export_posts` 负责写回 Markdown，Astro 继续按静态内容构建。
+
 ## 测试
 
 ```bash
