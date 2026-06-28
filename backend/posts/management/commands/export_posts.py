@@ -20,6 +20,11 @@ class Command(BaseCommand):
             action="store_true",
             help="Export only posts that can enter public static pages.",
         )
+        parser.add_argument(
+            "--clean",
+            action="store_true",
+            help="Remove stale .md / .mdx exports that no longer exist in the database result.",
+        )
 
     def handle(self, *args, **options):
         base_dir = Path(__file__).resolve().parents[4]
@@ -31,12 +36,25 @@ class Command(BaseCommand):
             posts = posts.filter(draft=False, private=False)
 
         exported_count = 0
+        export_paths = set()
         for post in posts:
             file_path = get_export_path(posts_dir, post.slug, post.source_format)
             file_path.write_text(render_post(post), encoding="utf-8")
+            export_paths.add(file_path)
             exported_count += 1
 
+        cleaned_count = 0
+        if options["clean"]:
+            for file_path in posts_dir.iterdir():
+                if file_path.suffix not in [".md", ".mdx"]:
+                    continue
+                if file_path not in export_paths:
+                    file_path.unlink()
+                    cleaned_count += 1
+
         self.stdout.write(self.style.SUCCESS(f"Exported {exported_count} posts."))
+        if options["clean"]:
+            self.stdout.write(self.style.SUCCESS(f"Cleaned {cleaned_count} stale posts."))
 
 
 def get_export_path(posts_dir, slug, source_format):

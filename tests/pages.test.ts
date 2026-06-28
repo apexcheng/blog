@@ -6,6 +6,9 @@ const aboutSource = readFileSync('src/pages/about.astro', 'utf8');
 const projectsSource = readFileSync('src/pages/projects.astro', 'utf8');
 const articlesSource = readFileSync('src/pages/articles/index.astro', 'utf8');
 const articleDetailSource = readFileSync('src/pages/articles/[...slug].astro', 'utf8');
+const categorySource = readFileSync('src/pages/articles/category/[category].astro', 'utf8');
+const tagSource = readFileSync('src/pages/articles/tag/[tag].astro', 'utf8');
+const searchSource = readFileSync('src/pages/search.astro', 'utf8');
 const rssSource = readFileSync('src/pages/rss.xml.ts', 'utf8');
 
 describe('front page structure', () => {
@@ -23,11 +26,22 @@ describe('front page structure', () => {
     expect(aboutSource).toContain('href="/projects/"');
   });
 
-  it('describes article category and tag lists as display-only', () => {
-    expect(articlesSource).toContain('真实文章数据生成');
-    expect(articlesSource).toContain('暂不支持点击筛选');
-    expect(articlesSource).toContain('搜索入口暂由指南页提供');
-    expect(articlesSource).not.toContain('独立筛选页');
+  it('links article categories and tags to static filter pages', () => {
+    expect(articlesSource).toContain('/articles/category/${encodeURIComponent(category)}/');
+    expect(articlesSource).toContain('/articles/tag/${encodeURIComponent(tag)}/');
+    expect(categorySource).toContain('getStaticPaths');
+    expect(categorySource).toContain('!post.data.draft');
+    expect(categorySource).toContain('!post.data.private');
+    expect(tagSource).toContain('getStaticPaths');
+    expect(tagSource).toContain('!post.data.draft');
+    expect(tagSource).toContain('!post.data.private');
+    expect(articlesSource).not.toContain('暂不支持点击筛选');
+  });
+
+  it('adds a static search page for the Pagefind entry point', () => {
+    expect(searchSource).toContain('Pagefind');
+    expect(searchSource).toContain('/guides/mdx-content/');
+    expect(searchSource).not.toContain('fetch(');
   });
 
   it('keeps article detail pages static and content-driven', () => {

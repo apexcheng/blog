@@ -2,15 +2,19 @@
 
 本文件给写作 Agent 使用，目标是把草稿整理成当前博客可发布的 Markdown / MDX 文章。
 
-## 文章位置
+## 内容源规则
 
-博客文章放在：
+Django 数据库是当前文章内容源。`src/content/posts/*.md` / `*.mdx` 是从数据库导出的 Astro 构建产物，不应由 Agent 长期直接维护。
+
+新增或修改文章时，推荐流程是：
 
 ```text
-src/content/posts/
+生成文章文件或草稿 -> upsert_post 入库 -> export_posts 导出 -> Astro build
 ```
 
-普通文章可以用 `.md`。需要使用组件时用 `.mdx`。
+也就是说：可以先生成临时 `.md` / `.mdx` 草稿文件，但正式内容要写入 Django 数据库，再导出到 `src/content/posts/`。
+
+## 文章文件
 
 新文章模板放在：
 
@@ -18,7 +22,13 @@ src/content/posts/
 templates/post.mdx
 ```
 
-新建文章时优先复制这个模板，再移动到 `src/content/posts/`。
+普通文章可以用 `.md`。需要使用组件时用 `.mdx`。新建文章时优先复制这个模板，确认后使用：
+
+```bash
+python3 backend/manage.py upsert_post path/to/article.mdx
+python3 backend/manage.py export_posts
+npm run build
+```
 
 ## Frontmatter
 
@@ -56,7 +66,7 @@ private: false
 
 - 新文章默认 `draft: true`，不会出现在列表、首页，也不会生成文章详情页。
 - 发布文章时，把 `draft` 改成 `false`。
-- `private: true` 当前在 Astro 静态前台视为不公开发布，不会生成公开页面。不要在静态前台里实现假的密码输入页；真正密码访问后续需要后端能力支持。
+- 文章密码访问暂不实现；当前 `private: true` 只表示不公开发布，不会生成公开页面。
 
 ## 静态文件下载
 
@@ -118,7 +128,6 @@ import Mermaid from '../../components/Mermaid.astro';
 
 以下能力后续再补充，不要提前假设已经支持：
 
-- 分类页和标签页的固定枚举。
 - 图片存放规范。
 - 新文章脚本。
 - 更多 MDX 组件。

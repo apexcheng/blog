@@ -14,6 +14,7 @@
 - Starlight
 - MDX
 - Mermaid
+- Django Admin 内容后台
 
 ## 核心文档
 
@@ -38,10 +39,28 @@ npm run build
 
 Windows 只作为浏览器预览环境使用，例如访问 `localhost`。
 
+## 发文流程
+
+Django 数据库是文章内容源，`src/content/posts/*.md` / `*.mdx` 是导出产物。Agent 或人工准备好文章文件后，先入库，再导出并构建：
+
+```bash
+python3 backend/manage.py upsert_post path/to/article.mdx
+python3 backend/manage.py export_posts
+npm run build
+```
+
+需要同时清理数据库已不存在的旧导出文章文件时：
+
+```bash
+python3 backend/manage.py export_posts --clean
+```
+
+`--clean` 只清理导出目录下的 `.md` / `.mdx` 文件，不处理其它资源文件。
+
 ## 当前原则
 
 - 先把 UI 和内容结构做顺，再考虑部署。
-- 优先静态博客，不做后台、登录、评论、数据库。
+- 前台优先静态构建，Django 只作为内容后台使用。
 - 普通文章用 Markdown，需要组件时再用 MDX。
 - 图表第一版优先使用 Mermaid。
 - 设计落地以简单、可维护、少依赖为准。

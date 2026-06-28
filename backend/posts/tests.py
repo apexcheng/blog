@@ -172,6 +172,86 @@ private: false
         self.assertTrue(Post.objects.filter(slug="automation-agent-workflow").exists())
 
 
+class UpsertPostCommandTests(TestCase):
+    def test_upserts_one_mdx_post_by_file_slug(self):
+        with TemporaryDirectory() as posts_dir:
+            file_path = Path(posts_dir, "single-post.mdx")
+            file_path.write_text(
+                """---
+title: 单篇入库
+description: 单篇入库摘要
+date: 2026-06-28
+category: Agent
+tags:
+  - Django
+  - MDX
+minutes: 7
+featured: true
+draft: false
+private: false
+---
+
+import Callout from '../../components/Callout.astro';
+
+<Callout>正文</Callout>
+""",
+                encoding="utf-8",
+            )
+
+            call_command("upsert_post", str(file_path))
+
+        post = Post.objects.get(slug="single-post")
+        self.assertEqual(post.title, "单篇入库")
+        self.assertEqual(post.category.name, "Agent")
+        self.assertEqual([tag.name for tag in post.tags.all()], ["Django", "MDX"])
+        self.assertEqual(post.source_format, "mdx")
+        self.assertIn("<Callout>正文</Callout>", post.body)
+
+    def test_updates_existing_post_by_file_slug(self):
+        category = Category.objects.create(name="旧分类", slug="old-category")
+        Post.objects.create(
+            title="旧标题",
+            slug="same-post",
+            description="旧摘要",
+            date="2026-01-01",
+            category=category,
+            minutes=1,
+            body="旧正文",
+        )
+
+        with TemporaryDirectory() as posts_dir:
+            file_path = Path(posts_dir, "same-post.md")
+            file_path.write_text(
+                """---
+title: 新标题
+description: 新摘要
+date: 2026-06-28
+category: 新分类
+tags: []
+minutes: 4
+featured: false
+draft: true
+private: true
+---
+
+新正文
+""",
+                encoding="utf-8",
+            )
+
+            call_command("upsert_post", str(file_path))
+
+        self.assertEqual(Post.objects.count(), 1)
+        post = Post.objects.get(slug="same-post")
+        self.assertEqual(post.title, "新标题")
+        self.assertEqual(post.category.name, "新分类")
+        self.assertEqual(list(post.tags.all()), [])
+        self.assertEqual(post.source_format, "md")
+        self.assertTrue(post.draft)
+        self.assertTrue(post.private)
+        self.assertEqual(post.body.strip(), "新正文")
+
+
 class ExportPostsCommandTests(TestCase):
     def setUp(self):
         self.category = Category.objects.create(name="Python", slug="python")
@@ -318,3 +398,27 @@ class ExportPostsCommandTests(TestCase):
         self.assertIn('description: "摘要 \\"含引号\\""', text)
         self.assertIn('category: "Python"', text)
         self.assertIn('  - "Django"', text)
+
+    def test_clean_removes_only_stale_markdown_exports(self):
+        Post.objects.create(
+            title="保留文章",
+            slug="keep-post",
+            description="保留摘要",
+            date="2026-06-28",
+            category=self.category,
+            minutes=5,
+            body="正文",
+        )
+
+        with TemporaryDirectory() as posts_dir:
+            Path(posts_dir, "keep-post.md").write_text("old", encoding="utf-8")
+            Path(posts_dir, "stale-post.md").write_text("old", encoding="utf-8")
+            Path(posts_dir, "stale-mdx.mdx").write_text("old", encoding="utf-8")
+            Path(posts_dir, "asset.txt").write_text("keep", encoding="utf-8")
+
+            call_command("export_posts", posts_dir=posts_dir, clean=True)
+
+            self.assertTrue(Path(posts_dir, "keep-post.md").exists())
+            self.assertFalse(Path(posts_dir, "stale-post.md").exists())
+            self.assertFalse(Path(posts_dir, "stale-mdx.mdx").exists())
+            self.assertTrue(Path(posts_dir, "asset.txt").exists())

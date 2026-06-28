@@ -1,0 +1,16 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+---
+
+<SiteLayout title="搜索" active="search">
+  <main class="page-content search-page">
+    <p class="eyebrow">Search</p>
+    <h1 class="page-title">搜索</h1>
+    <p class="page-lead">站点构建时会生成 Pagefind 索引。当前搜索入口沿用 Starlight 的 Pagefind 能力，可以先从指南页打开搜索。</p>
+    <div class="search-panel">
+      <h2>Pagefind 搜索入口</h2>
+      <p>进入指南页后，使用页面顶部的搜索框查找已进入索引的内容。</p>
+      <a class="button primary" href="/guides/mdx-content/">打开指南搜索</a>
+    </div>
+  </main>
+</SiteLayout>

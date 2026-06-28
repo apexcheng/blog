@@ -11,6 +11,7 @@ describe('site layout', () => {
 
   it('links the primary static pages from the main navigation', () => {
     expect(layoutSource).toContain('href="/articles/"');
+    expect(layoutSource).toContain('href="/search/"');
     expect(layoutSource).toContain('href="/projects/"');
     expect(layoutSource).toContain('href="/guides/mdx-content/"');
   });

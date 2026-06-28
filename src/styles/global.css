@@ -517,7 +517,8 @@ h3 {
   margin-top: 18px;
 }
 
-.chips span {
+.chips span,
+.chips a {
   background: #f8fafc;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -565,6 +566,11 @@ h3 {
   font-weight: 760;
 }
 
+.filter-panel .chips a {
+  display: inline-flex;
+  justify-content: center;
+}
+
 .search-placeholder {
   align-items: center;
   background: var(--paper);
@@ -575,6 +581,11 @@ h3 {
   height: 48px;
   margin: 24px 0;
   padding: 0 16px;
+}
+
+.search-placeholder a {
+  color: var(--blue);
+  font-weight: 720;
 }
 
 .content-note {
@@ -619,6 +630,36 @@ h3 {
 
 .article-list-item time span {
   display: block;
+}
+
+.filter-actions {
+  margin: 24px 0;
+}
+
+.filter-actions a {
+  color: var(--blue);
+  font-size: 14px;
+  font-weight: 720;
+}
+
+.search-page {
+  max-width: 920px;
+}
+
+.search-panel {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  margin-top: 28px;
+  padding: 28px;
+}
+
+.search-panel h2 {
+  margin: 0 0 10px;
+}
+
+.search-panel .button {
+  margin-top: 10px;
 }
 
 .article-shell {

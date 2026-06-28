@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import ArticleList from '../../../components/ArticleList.astro';
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+
+export async function getStaticPaths() {
+  const allPosts = (await getCollection('posts'))
+    .filter((post) => !post.data.draft && !post.data.private)
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  const tags = Array.from(new Set(allPosts.flatMap((post) => post.data.tags)));
+  return tags.map((tag) => ({
+    params: { tag: encodeURIComponent(tag) },
+    props: { tag, posts: allPosts.filter((post) => post.data.tags.includes(tag)) },
+  }));
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<SiteLayout title={`标签：${tag}`} active="articles">
+  <main class="page-content">
+    <p class="eyebrow">标签</p>
+    <h1 class="page-title">{tag}</h1>
+    <p class="page-lead">共 {posts.length} 篇公开文章。</p>
+    <div class="filter-actions">
+      <a href="/articles/">返回全部文章</a>
+    </div>
+    <ArticleList posts={posts} />
+  </main>
+</SiteLayout>

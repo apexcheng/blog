@@ -69,6 +69,22 @@ python3 backend/manage.py import_posts
 python3 backend/manage.py import_posts --posts-dir /path/to/posts
 ```
 
+## 单篇文章入库
+
+Agent 或人工准备好单篇 Markdown / MDX 文件后，可以按文件名 slug 写入或更新数据库：
+
+```bash
+cd /home/cheng/projects/personal-blog
+python3 backend/manage.py upsert_post path/to/article.mdx
+```
+
+规则：
+
+- 支持 `.md` 和 `.mdx`。
+- slug 使用文件名。
+- category 和 tags 不存在时自动创建。
+- `source_format` 根据文件后缀写入，`.md` 为 `md`，`.mdx` 为 `mdx`。
+
 ## 导出文章
 
 把 Django 数据库中的文章导出回 `src/content/posts/`：
@@ -88,12 +104,9 @@ python3 backend/manage.py export_posts --posts-dir /path/to/posts
 
 导出规则：
 
-- 如果已存在同 slug 的 `.mdx` 文件，优先覆盖 `.mdx`。
-- 否则如果已存在同 slug 的 `.md` 文件，覆盖 `.md`。
-- 如果同 slug 文件不存在，新建 `{slug}.md`。
+- 导出文件名使用 `{slug}.{source_format}`。
 - frontmatter 对齐当前 Astro posts schema。
 - `draft`、`private`、`featured`、分类、标签、阅读时间等字段都会写入 frontmatter。
-- 不导出 password 字段。
 - body 保留数据库中的 Markdown / MDX 原文，不做渲染。
 
 默认导出所有文章内容文件，包括 `draft: true` 和 `private: true`。这些文件仍由 Astro 页面、RSS 和搜索入口按现有边界过滤，不进入公开页面。
@@ -104,11 +117,20 @@ python3 backend/manage.py export_posts --posts-dir /path/to/posts
 python3 backend/manage.py export_posts --public-only
 ```
 
+如需删除数据库已不存在的旧导出文章文件，可以运行：
+
+```bash
+python3 backend/manage.py export_posts --clean
+```
+
+`--clean` 只清理导出目录中的 `.md` / `.mdx` 文件，不清理其它资源文件、`public/files` 或文档目录。它按当前数据库导出结果判断旧文件；如果把手写长期文章放在同一个导出目录，也可能被视为旧导出文件，所以不要长期手写维护 `src/content/posts/`。
+
 ## 发布流程
 
 当前流程仍然保留 Astro 静态前台，不让 Astro 页面直接请求 Django API。推荐流程是：
 
 ```bash
+python3 backend/manage.py upsert_post path/to/article.mdx
 python3 backend/manage.py export_posts
 npm run build
 ```

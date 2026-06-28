@@ -4,7 +4,7 @@ import { siteMeta } from '../data/site';
 
 interface Props {
   title?: string;
-  active?: 'home' | 'articles' | 'projects' | 'guides';
+  active?: 'home' | 'articles' | 'projects' | 'guides' | 'search';
   description?: string;
 }
 
@@ -36,6 +36,7 @@ const pageTitle = title === siteMeta.siteName ? title : `${title} | ${siteMeta.s
           <a class:list={[active === 'home' && 'active']} href="/">首页</a>
           <a class:list={[active === 'articles' && 'active']} href="/articles/">AI / Agent</a>
           <a href="/articles/">RPA</a>
+          <a class:list={[active === 'search' && 'active']} href="/search/">搜索</a>
           <a class:list={[active === 'projects' && 'active']} href="/projects/">项目</a>
           <a class:list={[active === 'guides' && 'active']} href="/guides/mdx-content/">指南</a>
           <a href="/about/">关于</a>
