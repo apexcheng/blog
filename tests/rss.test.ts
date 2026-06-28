@@ -13,9 +13,10 @@ describe('rss feed', () => {
     expect(rssSource).toContain('!post.data.draft');
     expect(rssSource).toContain('!post.data.private');
     expect(rssSource).toContain('@astrojs/rss');
+    expect(rssSource).toContain('new URL(import.meta.env.BASE_URL, context.site)');
   });
 
   it('links rss from the main navigation', () => {
-    expect(layoutSource).toContain('href={siteMeta.rssPath}');
+    expect(layoutSource).toContain('withBase(siteMeta.rssPath)');
   });
 });

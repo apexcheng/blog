@@ -40,9 +40,9 @@ git status --short
 
 ## 5. 上线前检查
 
-- `astro.config.mjs` 里的 `site: "https://cheng-notes.local"` 仍是临时域名；未确定真实域名前不要替换。
-- RSS 和 sitemap 会使用 `site` 生成绝对地址，上线前需要确认域名正确。
-- GitHub 当前是占位链接，确认真实地址后再替换 `src/data/site.ts` 中的配置。
+- 当前按 GitHub Pages 项目站点配置：`site: "https://apexcheng.github.io"`，`base: "/personal-blog"`。
+- RSS 和 sitemap 会使用 `site` / `base` 生成地址；如果仓库改名为 `blog`，需要同步把 `base` 改为 `/blog`。
+- GitHub 主页和项目仓库地址维护在 `src/data/site.ts`。
 - `private: true` 文章不会静态发布，也不会进入 RSS 或 Pagefind 搜索索引。
 - 确认 `public/files/` 中没有敏感文件；该目录内容会被静态发布。
 

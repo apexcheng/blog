@@ -1,8 +1,9 @@
 export const siteMeta = {
-  siteName: 'Cheng Notes',
-  siteDescription: '记录 AI、自动化与编程实践的个人技术博客',
-  authorName: 'Cheng',
-  githubUrl: 'https://github.com/',
-  githubIsPlaceholder: true,
+  siteName: '黄撑的技术笔记',
+  siteDescription: '记录电商自动化、AI Agent、RPA、表格处理和编程实践的个人技术博客',
+  authorName: '黄撑',
+  githubUrl: 'https://github.com/apexcheng',
+  githubIsPlaceholder: false,
+  projectUrl: 'https://github.com/apexcheng/personal-blog',
   rssPath: '/rss.xml',
 };

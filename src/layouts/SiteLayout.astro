@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { siteMeta } from '../data/site';
+import { withBase } from '../utils/paths';
 
 interface Props {
   title?: string;
@@ -28,19 +29,19 @@ const pageTitle = title === siteMeta.siteName ? title : `${title} | ${siteMeta.s
   <body>
     <div class="site-shell">
       <header class="site-header">
-        <a class="brand" href="/" aria-label={`${siteMeta.siteName} 首页`}>
+        <a class="brand" href={withBase('/')} aria-label={`${siteMeta.siteName} 首页`}>
           <span class="brand-mark">C</span>
           <span>{siteMeta.siteName}</span>
         </a>
         <nav class="site-nav" aria-label="主导航">
-          <a class:list={[active === 'home' && 'active']} href="/">首页</a>
-          <a class:list={[active === 'articles' && 'active']} href="/articles/">AI / Agent</a>
-          <a href="/articles/">RPA</a>
-          <a class:list={[active === 'search' && 'active']} href="/search/">搜索</a>
-          <a class:list={[active === 'projects' && 'active']} href="/projects/">项目</a>
-          <a class:list={[active === 'guides' && 'active']} href="/guides/mdx-content/">指南</a>
-          <a href="/about/">关于</a>
-          <a href={siteMeta.rssPath}>RSS</a>
+          <a class:list={[active === 'home' && 'active']} href={withBase('/')}>首页</a>
+          <a class:list={[active === 'articles' && 'active']} href={withBase('/articles/')}>AI / Agent</a>
+          <a href={withBase('/articles/')}>RPA</a>
+          <a class:list={[active === 'search' && 'active']} href={withBase('/search/')}>搜索</a>
+          <a class:list={[active === 'projects' && 'active']} href={withBase('/projects/')}>项目</a>
+          <a class:list={[active === 'guides' && 'active']} href={withBase('/guides/mdx-content/')}>指南</a>
+          <a href={withBase('/about/')}>关于</a>
+          <a href={withBase(siteMeta.rssPath)}>RSS</a>
         </nav>
         <button class="theme-button" type="button" aria-label="主题切换占位">◐</button>
       </header>

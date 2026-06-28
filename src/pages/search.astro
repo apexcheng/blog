@@ -1,5 +1,6 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+import { withBase } from '../utils/paths';
 ---
 
 <SiteLayout title="搜索" active="search">
@@ -10,7 +11,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
     <div class="search-panel">
       <h2>Pagefind 搜索入口</h2>
       <p>进入指南页后，使用页面顶部的搜索框查找已进入索引的内容。</p>
-      <a class="button primary" href="/guides/mdx-content/">打开指南搜索</a>
+      <a class="button primary" href={withBase('/guides/mdx-content/')}>打开指南搜索</a>
     </div>
   </main>
 </SiteLayout>

@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import SiteLayout from '../../layouts/SiteLayout.astro';
+import { siteMeta } from '../../data/site';
 
 export async function getStaticPaths() {
   const posts = (await getCollection('posts')).filter((post) => !post.data.draft && !post.data.private);
@@ -30,7 +31,7 @@ const { Content, headings } = await render(post);
       <h1>{post.data.title}</h1>
       <p class="article-description">{post.data.description}</p>
       <div class="meta-row">
-        <span>作者：Cheng</span>
+        <span>作者：{siteMeta.authorName}</span>
         <span>更新于 {post.data.date.toISOString().slice(0, 10)}</span>
       </div>
       <Content />

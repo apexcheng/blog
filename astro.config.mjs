@@ -4,7 +4,8 @@ import { defineConfig } from 'astro/config';
 import { siteMeta } from './src/data/site';
 
 export default defineConfig({
-  site: 'https://cheng-notes.local',
+  site: 'https://apexcheng.github.io',
+  base: '/personal-blog',
   devToolbar: {
     enabled: true,
   },

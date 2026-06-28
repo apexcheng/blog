@@ -14,11 +14,12 @@ export const projects = [
     tone: 'violet',
   },
   {
-    title: 'Markdown 图表展示系统',
+    title: '个人博客静态站点',
     type: '博客系统',
-    description: '让 Mermaid、架构图、代码块在文章页里稳定可读。',
-    tags: ['Mermaid', 'Astro', 'MDX'],
+    description: '基于 Astro / Starlight / MDX 维护技术文章、项目记录、RSS 和静态搜索。',
+    tags: ['Astro', 'MDX', 'GitHub Pages'],
     tone: 'blue',
+    url: 'https://github.com/apexcheng/personal-blog',
   },
   {
     title: '网页自动化稳定性实验',

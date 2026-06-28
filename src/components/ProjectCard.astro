@@ -5,6 +5,7 @@ interface Project {
   description: string;
   tags: string[];
   tone: string;
+  url?: string;
 }
 
 interface Props {
@@ -27,5 +28,6 @@ const number = String(index + 1).padStart(2, '0');
     <div class="chips">
       {project.tags.map((tag) => <span>{tag}</span>)}
     </div>
+    {project.url && <a class="project-link" href={project.url}>查看项目</a>}
   </div>
 </article>

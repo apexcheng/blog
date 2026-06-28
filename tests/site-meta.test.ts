@@ -14,7 +14,7 @@ describe('site metadata', () => {
     expect(existsSync(siteDataPath)).toBe(true);
 
     const siteDataSource = readFileSync(siteDataPath, 'utf8');
-    for (const field of ['siteName', 'siteDescription', 'authorName', 'githubUrl', 'githubIsPlaceholder', 'rssPath']) {
+    for (const field of ['siteName', 'siteDescription', 'authorName', 'githubUrl', 'githubIsPlaceholder', 'projectUrl', 'rssPath']) {
       expect(siteDataSource).toContain(field);
     }
   });
@@ -26,13 +26,14 @@ describe('site metadata', () => {
     expect(astroConfigSource).toContain("from './src/data/site'");
   });
 
-  it('documents unresolved launch-time placeholders', () => {
-    expect(astroConfigSource).toContain("site: 'https://cheng-notes.local'");
+  it('documents GitHub Pages site metadata', () => {
+    expect(astroConfigSource).toContain("site: 'https://apexcheng.github.io'");
+    expect(astroConfigSource).toContain("base: '/personal-blog'");
     expect(publishSource).toContain('上线前检查');
     expect(publishSource).toContain('RSS 和 sitemap');
-    expect(publishSource).toContain('GitHub 当前是占位链接');
+    expect(publishSource).toContain('GitHub Pages');
     expect(publishSource).toContain('private: true');
-    expect(todoSource).toContain('正式域名');
+    expect(todoSource).toContain('GitHub Pages');
     expect(todoSource).toContain('GitHub');
   });
 });
