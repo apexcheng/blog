@@ -89,6 +89,8 @@ def parse_post_file(text, file_path):
 
 
 def parse_value(value):
+    if value == "[]":
+        return []
     if value == "true":
         return True
     if value == "false":

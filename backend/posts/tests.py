@@ -191,6 +191,31 @@ featured: false
         self.assertTrue(Tag.objects.filter(name="Agent", slug="agent").exists())
         self.assertTrue(Tag.objects.filter(name="自动化", slug="自动化").exists())
 
+    def test_imports_empty_tags_list(self):
+        with TemporaryDirectory() as posts_dir:
+            Path(posts_dir, "no-tags.md").write_text(
+                """---
+title: 无标签文章
+description: 无标签摘要
+date: 2026-06-28
+category: Python
+tags: []
+minutes: 4
+featured: false
+draft: false
+private: false
+---
+
+正文
+""",
+                encoding="utf-8",
+            )
+
+            call_command("import_posts", posts_dir=posts_dir)
+
+        post = Post.objects.get(slug="no-tags")
+        self.assertEqual(list(post.tags.all()), [])
+
     def test_default_posts_dir_imports_existing_posts(self):
         call_command("import_posts")
 
