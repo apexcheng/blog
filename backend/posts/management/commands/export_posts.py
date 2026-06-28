@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 
 from django.core.management.base import BaseCommand
 
@@ -15,9 +16,9 @@ class Command(BaseCommand):
             help="Markdown posts directory. Defaults to src/content/posts.",
         )
         parser.add_argument(
-            "--include-drafts",
+            "--public-only",
             action="store_true",
-            help="Export draft posts too.",
+            help="Export only posts that can enter public static pages.",
         )
 
     def handle(self, *args, **options):
@@ -26,39 +27,31 @@ class Command(BaseCommand):
         posts_dir.mkdir(parents=True, exist_ok=True)
 
         posts = Post.objects.select_related("category").prefetch_related("tags")
-        if not options["include_drafts"]:
-            posts = posts.filter(draft=False)
+        if options["public_only"]:
+            posts = posts.filter(draft=False, private=False)
 
         exported_count = 0
         for post in posts:
-            file_path = get_export_path(posts_dir, post.slug)
+            file_path = get_export_path(posts_dir, post.slug, post.source_format)
             file_path.write_text(render_post(post), encoding="utf-8")
             exported_count += 1
 
         self.stdout.write(self.style.SUCCESS(f"Exported {exported_count} posts."))
 
 
-def get_export_path(posts_dir, slug):
-    mdx_path = posts_dir / f"{slug}.mdx"
-    if mdx_path.exists():
-        return mdx_path
-
-    md_path = posts_dir / f"{slug}.md"
-    if md_path.exists():
-        return md_path
-
-    return md_path
+def get_export_path(posts_dir, slug, source_format):
+    return posts_dir / f"{slug}.{source_format}"
 
 
 def render_post(post):
     tag_names = [tag.name for tag in post.tags.all()]
-    tags = "tags: []" if not tag_names else "tags:\n" + "\n".join(f"  - {name}" for name in tag_names)
+    tags = "tags: []" if not tag_names else "tags:\n" + "\n".join(f"  - {format_string(name)}" for name in tag_names)
     body = post.body.rstrip("\n")
     return f"""---
-title: {post.title}
-description: {post.description}
+title: {format_string(post.title)}
+description: {format_string(post.description)}
 date: {post.date.isoformat()}
-category: {post.category.name}
+category: {format_string(post.category.name)}
 {tags}
 minutes: {post.minutes}
 featured: {format_bool(post.featured)}
@@ -72,3 +65,7 @@ private: {format_bool(post.private)}
 
 def format_bool(value):
     return "true" if value else "false"
+
+
+def format_string(value):
+    return json.dumps(value, ensure_ascii=False)

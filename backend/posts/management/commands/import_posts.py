@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 
 from django.core.management.base import BaseCommand, CommandError
 from django.utils.text import slugify
@@ -31,20 +32,24 @@ class Command(BaseCommand):
             frontmatter, body = parse_post_file(text, file_path)
             category = get_or_create_category(frontmatter["category"])
             tags = [get_or_create_tag(name) for name in frontmatter.get("tags", [])]
+            defaults = {
+                "title": frontmatter["title"],
+                "description": frontmatter["description"],
+                "date": frontmatter["date"],
+                "category": category,
+                "minutes": frontmatter["minutes"],
+                "featured": frontmatter.get("featured", False),
+                "draft": frontmatter.get("draft", False),
+                "private": frontmatter.get("private", False),
+                "source_format": file_path.suffix.lstrip("."),
+                "body": body,
+            }
+            if "password" in frontmatter:
+                defaults["password"] = frontmatter["password"]
 
             post, _created = Post.objects.update_or_create(
                 slug=file_path.stem,
-                defaults={
-                    "title": frontmatter["title"],
-                    "description": frontmatter["description"],
-                    "date": frontmatter["date"],
-                    "category": category,
-                    "minutes": frontmatter["minutes"],
-                    "featured": frontmatter.get("featured", False),
-                    "draft": frontmatter.get("draft", False),
-                    "private": frontmatter.get("private", False),
-                    "body": body,
-                },
+                defaults=defaults,
             )
             post.tags.set(tags)
             imported_count += 1
@@ -64,7 +69,7 @@ def parse_post_file(text, file_path):
     current_key = None
     for line in parts[1].splitlines():
         if line.startswith("  - ") and current_key:
-            data.setdefault(current_key, []).append(line[4:].strip())
+            data.setdefault(current_key, []).append(parse_value(line[4:].strip()))
             continue
 
         if ":" not in line:
@@ -97,6 +102,8 @@ def parse_value(value):
         return False
     if value.isdigit():
         return int(value)
+    if value.startswith('"') and value.endswith('"'):
+        return json.loads(value)
     return value
 
 

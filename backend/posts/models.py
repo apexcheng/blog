@@ -29,6 +29,11 @@ class Tag(models.Model):
 
 
 class Post(models.Model):
+    SOURCE_FORMAT_CHOICES = [
+        ("md", "Markdown"),
+        ("mdx", "MDX"),
+    ]
+
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
     description = models.TextField()
@@ -40,6 +45,7 @@ class Post(models.Model):
     draft = models.BooleanField(default=False)
     private = models.BooleanField(default=False)
     password = models.CharField(max_length=128, blank=True)
+    source_format = models.CharField(max_length=3, choices=SOURCE_FORMAT_CHOICES, default="md")
     body = models.TextField()
 
     class Meta:

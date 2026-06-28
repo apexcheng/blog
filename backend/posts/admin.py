@@ -24,3 +24,8 @@ class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     search_fields = ("title", "slug", "description", "body")
     filter_horizontal = ("tags",)
+    fieldsets = (
+        ("基础信息", {"fields": ("title", "slug", "description", "date", "category", "tags", "minutes", "source_format")}),
+        ("发布状态", {"fields": ("featured", "draft", "private", "password")}),
+        ("Markdown / MDX 原文", {"fields": ("body",)}),
+    )

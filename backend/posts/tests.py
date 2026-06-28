@@ -120,6 +120,7 @@ private: false
         self.assertTrue(post.featured)
         self.assertFalse(post.draft)
         self.assertFalse(post.private)
+        self.assertEqual(post.source_format, "md")
         self.assertIn("## 正文标题", post.body)
 
     def test_updates_existing_post_by_slug(self):
@@ -190,6 +191,32 @@ featured: false
         self.assertTrue(Category.objects.filter(name="AI / 工作流").exists())
         self.assertTrue(Tag.objects.filter(name="Agent", slug="agent").exists())
         self.assertTrue(Tag.objects.filter(name="自动化", slug="自动化").exists())
+        self.assertEqual(Post.objects.get(slug="auto-taxonomy").source_format, "mdx")
+
+    def test_imports_quoted_tags_without_quotes(self):
+        with TemporaryDirectory() as posts_dir:
+            Path(posts_dir, "quoted-tags.md").write_text(
+                """---
+title: 引号标签
+description: 标签导入时去掉引号
+date: 2026-06-28
+category: Python
+tags:
+  - "Django"
+  - "MDX"
+minutes: 4
+featured: false
+---
+
+正文
+""",
+                encoding="utf-8",
+            )
+
+            call_command("import_posts", posts_dir=posts_dir)
+
+        post = Post.objects.get(slug="quoted-tags")
+        self.assertEqual([tag.name for tag in post.tags.all()], ["Django", "MDX"])
 
     def test_imports_empty_tags_list(self):
         with TemporaryDirectory() as posts_dir:
@@ -244,18 +271,18 @@ class ExportPostsCommandTests(TestCase):
             call_command("export_posts", posts_dir=posts_dir)
             text = Path(posts_dir, "export-post.md").read_text(encoding="utf-8")
 
-        self.assertIn("title: 导出文章", text)
-        self.assertIn("description: 导出文章摘要", text)
+        self.assertIn('title: "导出文章"', text)
+        self.assertIn('description: "导出文章摘要"', text)
         self.assertIn("date: 2026-06-28", text)
-        self.assertIn("category: Python", text)
-        self.assertIn("tags:\n  - Django", text)
+        self.assertIn('category: "Python"', text)
+        self.assertIn('tags:\n  - "Django"', text)
         self.assertIn("minutes: 6", text)
         self.assertIn("featured: true", text)
         self.assertIn("draft: false", text)
         self.assertIn("private: false", text)
         self.assertTrue(text.endswith("## 正文\n\n这里是正文。\n"))
 
-    def test_exports_to_existing_mdx_file_without_creating_md_file(self):
+    def test_exports_mdx_post_to_mdx_file(self):
         Post.objects.create(
             title="MDX 文章",
             slug="mdx-post",
@@ -263,16 +290,15 @@ class ExportPostsCommandTests(TestCase):
             date="2026-06-28",
             category=self.category,
             minutes=5,
+            source_format="mdx",
             body="import Callout from '../../components/Callout.astro';\n\n<Callout>正文</Callout>",
         )
 
         with TemporaryDirectory() as posts_dir:
-            Path(posts_dir, "mdx-post.mdx").write_text("old content", encoding="utf-8")
-
             call_command("export_posts", posts_dir=posts_dir)
             text = Path(posts_dir, "mdx-post.mdx").read_text(encoding="utf-8")
 
-            self.assertIn("title: MDX 文章", text)
+            self.assertIn('title: "MDX 文章"', text)
             self.assertIn("<Callout>正文</Callout>", text)
             self.assertFalse(Path(posts_dir, "mdx-post.md").exists())
 
@@ -308,10 +334,12 @@ class ExportPostsCommandTests(TestCase):
 
         with TemporaryDirectory() as posts_dir:
             call_command("export_posts", posts_dir=posts_dir)
+            text = Path(posts_dir, "draft-post.md").read_text(encoding="utf-8")
 
-            self.assertFalse(Path(posts_dir, "draft-post.md").exists())
+        self.assertIn("draft: true", text)
+        self.assertIn("草稿正文", text)
 
-    def test_exports_draft_when_include_drafts_is_passed(self):
+    def test_public_only_does_not_export_draft(self):
         Post.objects.create(
             title="草稿文章",
             slug="draft-post",
@@ -324,11 +352,9 @@ class ExportPostsCommandTests(TestCase):
         )
 
         with TemporaryDirectory() as posts_dir:
-            call_command("export_posts", posts_dir=posts_dir, include_drafts=True)
-            text = Path(posts_dir, "draft-post.md").read_text(encoding="utf-8")
+            call_command("export_posts", posts_dir=posts_dir, public_only=True)
 
-        self.assertIn("draft: true", text)
-        self.assertIn("草稿正文", text)
+            self.assertFalse(Path(posts_dir, "draft-post.md").exists())
 
     def test_private_post_export_does_not_include_password(self):
         Post.objects.create(
@@ -350,3 +376,24 @@ class ExportPostsCommandTests(TestCase):
         self.assertIn("private: true", text)
         self.assertNotIn("password", text)
         self.assertNotIn("secret", text)
+
+    def test_exports_frontmatter_with_quoted_strings(self):
+        post = Post.objects.create(
+            title="标题: 含冒号",
+            slug="quoted-post",
+            description='摘要 "含引号"',
+            date="2026-06-28",
+            category=self.category,
+            minutes=5,
+            body="正文",
+        )
+        post.tags.add(self.tag)
+
+        with TemporaryDirectory() as posts_dir:
+            call_command("export_posts", posts_dir=posts_dir)
+            text = Path(posts_dir, "quoted-post.md").read_text(encoding="utf-8")
+
+        self.assertIn('title: "标题: 含冒号"', text)
+        self.assertIn('description: "摘要 \\"含引号\\""', text)
+        self.assertIn('category: "Python"', text)
+        self.assertIn('  - "Django"', text)

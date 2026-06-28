@@ -1,13 +1,15 @@
 ---
-title: 网页自动化里，什么时候该用选择器而不是坐标点击？
-description: 把稳定性、可验证性和维护成本放在一起看。
+title: "网页自动化里，什么时候该用选择器而不是坐标点击？"
+description: "把稳定性、可验证性和维护成本放在一起看。"
 date: 2026-06-12
-category: RPA / 浏览器
+category: "RPA / 浏览器"
 tags:
-  - Playwright
-  - RPA
+  - "Playwright"
+  - "RPA"
 minutes: 8
 featured: false
+draft: false
+private: false
 ---
 
 ## 背景
