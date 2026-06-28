@@ -5,7 +5,7 @@ date: 2026-05-28
 category: Python
 tags:
   - Python
-  - Cache
+  - 缓存
 minutes: 9
 featured: false
 ---

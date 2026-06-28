@@ -16,6 +16,23 @@
 4. 不要把项目复制到 `/mnt/c`、桌面或其他 Windows 目录中开发。
 5. 如果当前工具只能从 Windows shell 访问项目，必须明确说明“需切换到 WSL 环境运行验证”，不要把 Windows shell 中的结果当作最终验证。
 
+### 0.1 WSL / Windows Shell 执行细节
+
+部分 Agent 工具可能从 Windows PowerShell 发起命令，再转入 WSL 执行。为减少跨 shell 解析、路径和编码问题：
+
+1. 项目命令优先统一通过 WSL bash 执行：
+   ```bash
+   wsl -d Ubuntu --cd /home/cheng/projects/personal-blog bash -lc '...'
+   ```
+2. 避免在 PowerShell 外层直接写复杂管道、`&&`、heredoc、多层引号、Markdown 反引号或大段中文文本。
+3. 涉及中文、Markdown 反引号、复杂补丁、`git apply --cached`、行级暂存时，优先在 WSL 内处理；必要时在项目目录创建临时脚本，运行后立即删除，不纳入提交。
+4. 不要从 PowerShell 管道直接向 WSL 传中文补丁或长文本，避免编码或转义被中途改写。
+5. Node / npm 如果出现 WSL、Node 路径异常，先在 WSL bash 中确认并显式设置 PATH，例如：
+   ```bash
+   export PATH=/home/cheng/.local/bin:/home/cheng/.hermes/node/bin:$PATH
+   ```
+6. 不要把 Windows shell、路径转换或编码导致的失败直接判断为项目失败；先确认是否是跨 shell 执行问题。
+
 ---
 
 ## 1. 总体原则

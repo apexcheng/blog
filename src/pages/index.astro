@@ -15,7 +15,7 @@ const sidePosts = posts.filter((post) => post.id !== featuredPost.id).slice(0, 3
   <main class="page-content">
     <section class="hero-grid">
       <div>
-        <p class="eyebrow">AI Automation · RPA · Engineering Notes</p>
+        <p class="eyebrow">AI 自动化 · RPA · 工程笔记</p>
         <h1>记录 AI、自动化与编程实践的个人技术博客</h1>
         <p class="hero-lead">
           这里不是企业官网，而是一张持续更新的工作台：沉淀文章、项目记录、架构图、流程图、代码片段，以及把复杂问题讲清楚的实践笔记。
@@ -41,13 +41,13 @@ const sidePosts = posts.filter((post) => post.id !== featuredPost.id).slice(0, 3
           <p><span class="prompt">$</span> build personal knowledge system</p>
           <p><span class="token">focus</span>: <span class="string">reading, diagrams, code</span></p>
           <p><span class="token">topics</span>: AI Agents · RPA · Python · MDX</p>
-          <p class="comment"># Mermaid / architecture / automation cases</p>
+          <p class="comment"># Mermaid / architecture / automation notes</p>
           <div class="mini-diagram">
-            <b>Automation Pipeline</b>
+            <b>自动化流程</b>
             <div>
-              <span>Input</span>
-              <span>Agent</span>
-              <span>Result</span>
+              <span>输入</span>
+              <span>执行</span>
+              <span>结果</span>
             </div>
           </div>
         </div>
@@ -80,11 +80,11 @@ const sidePosts = posts.filter((post) => post.id !== featuredPost.id).slice(0, 3
       </div>
       <div class="feature-grid">
         <article class="featured-card">
-          <span class="pill">Featured · {featuredPost.data.category}</span>
+          <span class="pill">精选 · {featuredPost.data.category}</span>
           <h3><a href={`/articles/${featuredPost.slug}/`}>{featuredPost.data.title}</a></h3>
           <p>{featuredPost.data.description}</p>
           <div class="meta-row">
-            <span>{featuredPost.data.minutes} min read</span>
+            <span>{featuredPost.data.minutes} 分钟阅读</span>
             <span>{featuredPost.data.date.toISOString().slice(0, 10)}</span>
             <span>{featuredPost.data.tags[0]}</span>
           </div>

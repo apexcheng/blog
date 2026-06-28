@@ -20,7 +20,7 @@ const { Content, headings } = await render(post);
       <h2>文章信息</h2>
       <p>{post.data.category}</p>
       <p>{post.data.date.toISOString().slice(0, 10)}</p>
-      <p>{post.data.minutes} min read</p>
+      <p>{post.data.minutes} 分钟阅读</p>
       <div class="chips">
         {post.data.tags.map((tag) => <span>{tag}</span>)}
       </div>
@@ -30,13 +30,13 @@ const { Content, headings } = await render(post);
       <h1>{post.data.title}</h1>
       <p class="article-description">{post.data.description}</p>
       <div class="meta-row">
-        <span>Written by Cheng</span>
-        <span>Updated {post.data.date.toISOString().slice(0, 10)}</span>
+        <span>作者：Cheng</span>
+        <span>更新于 {post.data.date.toISOString().slice(0, 10)}</span>
       </div>
       <Content />
     </article>
     <aside class="toc-panel">
-      <h2>On this page</h2>
+      <h2>本文目录</h2>
       {headings.filter((heading) => heading.depth === 2).map((heading) => (
         <a href={`#${heading.slug}`}>{heading.text}</a>
       ))}

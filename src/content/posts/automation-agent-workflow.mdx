@@ -2,10 +2,10 @@
 title: 如何设计一个可维护的自动化 Agent 工作流
 description: 先让流程可读、失败点可见，再考虑抽象和复用。
 date: 2026-06-18
-category: AI / Workflow
+category: AI / 工作流
 tags:
   - Agent
-  - Automation
+  - 自动化
   - MDX
 minutes: 12
 featured: true
@@ -20,6 +20,10 @@ import Mermaid from '../../components/Mermaid.astro';
 
 <Callout>
 核心原则：复杂逻辑可以存在，但状态变化和失败边界必须显式。
+</Callout>
+
+<Callout title="提示">
+先把流程画清楚，再决定是否需要抽函数或拆模块。
 </Callout>
 
 ## 工具边界
@@ -39,12 +43,54 @@ save_run_log(result)
 文章中的 Mermaid 或架构图要放在有边界的容器里，图表下方可以保留简短说明，避免长文阅读时丢失上下文。
 
 <Mermaid
-  title="Automation Pipeline"
+  title="Agent 架构图"
+  caption="把模型判断、工具动作和人工确认分开，避免副作用隐藏在同一层。"
+  chart={`flowchart LR
+    A[任务输入] --> B[Agent 判断]
+    B --> C[工具执行]
+    C --> D[结果记录]
+    D --> E[人工确认]`}
+/>
+
+<Mermaid
+  title="自动化流程"
   caption="输入、工具调用、结果确认三个节点保持可追踪。"
   chart={`flowchart LR
-    A[Input] --> B[Agent]
-    B --> C[Result]`}
+    A[输入] --> B[Agent]
+    B --> C[结果]`}
 />
+
+<Mermaid
+  title="网页自动化时序"
+  caption="用于验证文章详情页里的时序图展示。"
+  chart={`sequenceDiagram
+    participant User as 用户
+    participant Agent as Agent
+    participant Tool as 自动化工具
+    participant Page as 页面
+    User->>Agent: 提交任务
+    Agent->>Tool: 调用选择器动作
+    Tool->>Page: 点击并读取状态
+    Page-->>Tool: 返回结果
+    Tool-->>Agent: 写入执行记录
+    Agent-->>User: 请求确认`}
+/>
+
+<Mermaid
+  title="失败处理流程"
+  caption="失败分支保持显式，方便后续补充日志或人工处理。"
+  chart={`flowchart TD
+    A[执行任务] --> B{是否成功}
+    B -- 是 --> C[保存结果]
+    B -- 否 --> D[记录错误信息]
+    D --> E[提示人工检查]
+    C --> F[结束]
+    E --> F`}
+/>
+
+<Callout title="注意">
+不要吞异常，也不要把失败处理藏在装饰器或过深的工具封装里。
+</Callout>
 
 ## 失败处理
 

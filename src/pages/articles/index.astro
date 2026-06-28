@@ -5,20 +5,37 @@ import SiteLayout from '../../layouts/SiteLayout.astro';
 const posts = (await getCollection('posts'))
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const categories = ['全部文章', 'AI / Agent', 'RPA / 自动化', '编程笔记', 'Markdown / MDX', '架构图示例'];
+const categories = Array.from(new Set(posts.map((post) => post.data.category)));
+const tags = Array.from(new Set(posts.flatMap((post) => post.data.tags))).sort((a, b) => a.localeCompare(b));
 ---
 
 <SiteLayout title="文章列表" active="articles">
   <main class="page-content two-column-page">
     <aside class="filter-panel">
       <h2>内容分类</h2>
-      {categories.map((category, index) => <a class:list={[index === 0 && 'active']} href="/articles/">{category}</a>)}
+      <a class="active" href="/articles/">全部文章 <span>{posts.length}</span></a>
+      {categories.map((category) => (
+        <a href="/articles/">
+          {category} <span>{posts.filter((post) => post.data.category === category).length}</span>
+        </a>
+      ))}
+      <h2 class="filter-subtitle">标签</h2>
+      <div class="chips">
+        {tags.map((tag) => (
+          <span>{tag}</span>
+        ))}
+      </div>
     </aside>
     <section>
-      <p class="eyebrow">Articles</p>
+      <p class="eyebrow">文章</p>
       <h1 class="page-title">文章列表</h1>
       <p class="page-lead">按主题、标签和更新时间组织技术内容。列表页保持轻量，重点是快速扫描标题、摘要和主题。</p>
-      <div class="search-placeholder">Search notes, projects, diagrams...</div>
+      <div class="search-placeholder">当前共有 {posts.length} 篇文章、{categories.length} 个分类、{tags.length} 个标签；搜索入口暂由指南页提供。</div>
+      {posts.length < 6 && (
+        <p class="content-note">
+          分类和标签基于真实文章数据生成，当前只作为展示，暂不支持点击筛选。
+        </p>
+      )}
       <div class="article-list">
         {posts.map((post) => (
           <article class="article-list-item">
@@ -32,7 +49,7 @@ const categories = ['全部文章', 'AI / Agent', 'RPA / 自动化', '编程笔�
             </div>
             <time datetime={post.data.date.toISOString()}>
               {post.data.date.toISOString().slice(0, 10)}
-              <span>{post.data.minutes} min</span>
+              <span>{post.data.minutes} 分钟</span>
             </time>
           </article>
         ))}
