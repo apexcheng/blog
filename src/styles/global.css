@@ -825,7 +825,10 @@ h3 {
     grid-template-columns: 1fr;
   }
 
-  .article-info,
+  .article-info {
+    display: none;
+  }
+
   .toc-panel {
     position: static;
   }
@@ -882,10 +885,6 @@ h3 {
 
   .article-list-item time {
     text-align: left;
-  }
-
-  .article-info {
-    display: none;
   }
 
   .article-content {
