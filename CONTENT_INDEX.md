@@ -15,3 +15,4 @@
 | `src/content/posts/minimal-cache-logic.md` | `数据处理` | 最小抽象、缓存读写、保存时机 | 写数据处理、缓存、显式数据流文章时参考 |
 | `src/content/posts/visual-notes-components.mdx` | `Skill` | VisualGrid、MetricCard、FeatureCard、DecisionFlow 示例 | 写视觉笔记、MDX 组件化文章时优先参考 |
 | `src/content/posts/context-flow-demo.mdx` | `视觉实验室` | 上下文流程图、ContextFlow 组件、MDX 教学型视觉图 | 写视觉实验、组件展示、AI 基础概念说明时参考 |
+| `src/content/posts/code-block-style-lab.mdx` | `视觉实验室` | 8 种代码块样式候选、CodeBlockStyleShowcase 组件 | 做代码块风格选型、全局样式确认时参考 |

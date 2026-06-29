@@ -1,0 +1,272 @@
+---
+const codeSample = `# automation/workbench.py
+from agent import analyze_task
+from sheet import update_report
+from notify import send_dingtalk
+
+TASKS = ["collect", "analyze", "sync"]
+
+for task in TASKS:
+    result = analyze_task(task)
+    update_report(result)
+
+send_dingtalk("workflow synced")`;
+
+const styles = [
+  {
+    key: 'midnight',
+    name: '01 · 深夜蓝黑',
+    meta: '当前方向 · 科技感强',
+    note: '适合 AI Agent、自动化、代码说明类文章。',
+  },
+  {
+    key: 'terminal',
+    name: '02 · 终端黑绿',
+    meta: '命令行感 · 极客',
+    note: '适合命令、日志、部署、调试记录。',
+  },
+  {
+    key: 'paper',
+    name: '03 · 纸张浅色',
+    meta: '文档感 · 轻阅读',
+    note: '适合长文章，但代码质感弱一点。',
+  },
+  {
+    key: 'github',
+    name: '04 · GitHub 浅灰',
+    meta: '标准感 · 稳妥',
+    note: '通用、安全，适合不想太抢视觉的文章。',
+  },
+  {
+    key: 'notebook',
+    name: '05 · 笔记卡片',
+    meta: '视觉笔记 · 柔和',
+    note: '和当前博客的视觉笔记方向比较搭。',
+  },
+  {
+    key: 'aurora',
+    name: '06 · 极光渐变',
+    meta: '展示感 · 强视觉',
+    note: '适合少量重点代码，不适合全文大量使用。',
+  },
+  {
+    key: 'glass',
+    name: '07 · 玻璃拟态',
+    meta: '轻科技 · 装饰',
+    note: '适合首页、项目页、视觉实验，不一定适合正文默认。',
+  },
+  {
+    key: 'mono',
+    name: '08 · 极简单色',
+    meta: '克制 · 内容优先',
+    note: '适合数据处理、公式、长代码片段。',
+  },
+];
+---
+
+<section class="code-style-showcase">
+  {styles.map((item) => (
+    <article class={`code-style-card code-style-card--${item.key}`}>
+      <div class="code-style-card__header">
+        <div>
+          <h2>{item.name}</h2>
+          <p>{item.meta}</p>
+        </div>
+        <span>{item.key}</span>
+      </div>
+
+      <pre><code>{codeSample}</code></pre>
+
+      <p class="code-style-card__note">{item.note}</p>
+    </article>
+  ))}
+</section>
+
+<style>
+  .code-style-showcase {
+    display: grid;
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .code-style-card {
+    --card-bg: #ffffff;
+    --card-border: rgba(148, 163, 184, 0.26);
+    --title: #0f172a;
+    --muted: #64748b;
+    --code-bg: #111827;
+    --code-fg: #e5eefb;
+    --code-border: rgba(148, 163, 184, 0.24);
+    --accent: #2563eb;
+
+    padding: clamp(1rem, 3vw, 1.4rem);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    background: var(--card-bg);
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  }
+
+  .code-style-card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .code-style-card h2 {
+    margin: 0;
+    color: var(--title);
+    font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+  }
+
+  .code-style-card__header p {
+    margin: 0.35rem 0 0;
+    color: var(--muted);
+  }
+
+  .code-style-card__header span {
+    flex: 0 0 auto;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .code-style-card pre {
+    margin: 0;
+    padding: 1.15rem 1.25rem;
+    border: 1px solid var(--code-border);
+    border-radius: 18px;
+    background: var(--code-bg);
+    color: var(--code-fg);
+    overflow-x: auto;
+    font: 13px/1.75 "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+    white-space: pre;
+  }
+
+  .code-style-card code {
+    color: inherit;
+    font: inherit;
+  }
+
+  .code-style-card__note {
+    margin: 0.85rem 0 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .code-style-card--midnight {
+    --card-bg: linear-gradient(180deg, #ffffff, #f8fbff);
+    --card-border: rgba(37, 99, 235, 0.18);
+    --title: #1e3a8a;
+    --code-bg: #18202d;
+    --code-fg: #e6edf7;
+    --code-border: #3b4658;
+    --accent: #2563eb;
+  }
+
+  .code-style-card--terminal {
+    --card-bg: #08110d;
+    --card-border: rgba(34, 197, 94, 0.34);
+    --title: #dcfce7;
+    --muted: #86efac;
+    --code-bg: #030807;
+    --code-fg: #d9f99d;
+    --code-border: rgba(34, 197, 94, 0.4);
+    --accent: #22c55e;
+    box-shadow: 0 20px 50px rgba(5, 46, 22, 0.26);
+  }
+
+  .code-style-card--terminal pre {
+    text-shadow: 0 0 12px rgba(132, 204, 22, 0.18);
+  }
+
+  .code-style-card--paper {
+    --card-bg: #fffaf0;
+    --card-border: rgba(180, 83, 9, 0.18);
+    --title: #78350f;
+    --muted: #92400e;
+    --code-bg: #fff7ed;
+    --code-fg: #431407;
+    --code-border: rgba(180, 83, 9, 0.2);
+    --accent: #d97706;
+  }
+
+  .code-style-card--github {
+    --card-bg: #ffffff;
+    --card-border: #d8dee4;
+    --title: #24292f;
+    --muted: #57606a;
+    --code-bg: #f6f8fa;
+    --code-fg: #24292f;
+    --code-border: #d8dee4;
+    --accent: #0969da;
+    box-shadow: 0 12px 26px rgba(31, 35, 40, 0.08);
+  }
+
+  .code-style-card--notebook {
+    --card-bg: linear-gradient(180deg, #fbf7ff, #f8fbff);
+    --card-border: rgba(168, 85, 247, 0.18);
+    --title: #581c87;
+    --muted: #7c3aed;
+    --code-bg: #ffffff;
+    --code-fg: #312e81;
+    --code-border: rgba(168, 85, 247, 0.22);
+    --accent: #8b5cf6;
+  }
+
+  .code-style-card--notebook pre {
+    box-shadow: inset 4px 0 0 rgba(139, 92, 246, 0.32);
+  }
+
+  .code-style-card--aurora {
+    --card-bg: radial-gradient(circle at top left, rgba(45, 212, 191, 0.2), transparent 34%), radial-gradient(circle at top right, rgba(168, 85, 247, 0.18), transparent 30%), #0f172a;
+    --card-border: rgba(125, 211, 252, 0.3);
+    --title: #f8fafc;
+    --muted: #bae6fd;
+    --code-bg: rgba(2, 6, 23, 0.72);
+    --code-fg: #e0f2fe;
+    --code-border: rgba(125, 211, 252, 0.28);
+    --accent: #22d3ee;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.28);
+  }
+
+  .code-style-card--glass {
+    --card-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(219, 234, 254, 0.52));
+    --card-border: rgba(255, 255, 255, 0.66);
+    --title: #0f172a;
+    --muted: #475569;
+    --code-bg: rgba(255, 255, 255, 0.58);
+    --code-fg: #0f172a;
+    --code-border: rgba(255, 255, 255, 0.72);
+    --accent: #0284c7;
+    backdrop-filter: blur(16px);
+  }
+
+  .code-style-card--glass pre {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  }
+
+  .code-style-card--mono {
+    --card-bg: #fafafa;
+    --card-border: #d4d4d4;
+    --title: #171717;
+    --muted: #525252;
+    --code-bg: #f5f5f5;
+    --code-fg: #171717;
+    --code-border: #d4d4d4;
+    --accent: #404040;
+    box-shadow: none;
+  }
+
+  @media (max-width: 640px) {
+    .code-style-card__header {
+      flex-direction: column;
+    }
+  }
+</style>
