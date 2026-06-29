@@ -37,6 +37,8 @@ describe('front page structure', () => {
     expect(aboutSource).toContain('项目仓库');
     expect(aboutSource).toContain('RSS 订阅');
     expect(aboutSource).toContain('项目记录');
+    expect(aboutSource).toContain('访问图床');
+    expect(aboutSource).toContain('https://apexcheng.github.io/gallery/');
   });
 
   it('keeps migrated about page content and assets', () => {

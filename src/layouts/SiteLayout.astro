@@ -123,7 +123,7 @@ const searchItems = [
 
         function updateThemeButton() {
           if (!themeButton) return;
-          var label = currentStyleTheme() === 'index' ? 'Index' : 'Classic';
+          var label = currentStyleTheme() === 'index' ? '晨曦手札' : '素笺经典';
           var mode = currentTheme() === 'dark' ? '深色' : '浅色';
           themeButton.setAttribute('aria-label', '当前主题：' + label + ' ' + mode + '，点击选择主题');
           themeButton.setAttribute('title', '当前主题：' + label + ' ' + mode);
