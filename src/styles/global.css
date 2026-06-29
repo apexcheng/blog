@@ -99,7 +99,9 @@ body {
 }
 
 html[data-style-theme='index'] body {
-  background: var(--bg);
+  background:
+    linear-gradient(135deg, #ece7d8 0%, #f8f1df 46%, #dfe7d6 100%),
+    var(--bg);
 }
 
 a {
@@ -283,8 +285,11 @@ p {
   padding: 10px;
 }
 
-.theme-button,
-.style-button {
+.theme-menu {
+  position: relative;
+}
+
+.theme-button {
   align-items: center;
   background: var(--paper);
   border: 1px solid var(--line);
@@ -292,16 +297,58 @@ p {
   color: var(--muted);
   cursor: pointer;
   display: inline-flex;
-  height: 34px;
-  justify-content: center;
-  width: 34px;
-}
-
-.style-button {
   font-size: 12px;
   font-weight: 800;
+  height: 34px;
+  justify-content: center;
+  min-width: 70px;
   padding: 0 10px;
-  width: auto;
+}
+
+.theme-menu-panel {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 4px;
+  min-width: 152px;
+  opacity: 0;
+  padding: 8px;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  transform: translateY(-4px);
+  transition: opacity 0.16s ease, transform 0.16s ease;
+  visibility: hidden;
+  z-index: 30;
+}
+
+.theme-menu.open .theme-menu-panel,
+.theme-menu:focus-within .theme-menu-panel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.theme-menu-panel button {
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+  padding: 9px 10px;
+  text-align: left;
+}
+
+.theme-menu-panel button:hover,
+.theme-menu-panel button:focus {
+  background: var(--paper-soft);
+  color: var(--ink);
+  outline: 0;
 }
 
 .page-content {

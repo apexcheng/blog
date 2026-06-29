@@ -84,8 +84,15 @@ const searchItems = [
           <a href={withBase(siteMeta.rssPath)}>RSS</a>
           <a href={withBase('/about/')}>关于</a>
         </nav>
-        <button class="style-button" type="button" aria-label="切换到 Index Journal 主题" data-style-toggle>Index</button>
-        <button class="theme-button" type="button" aria-label="切换到深色主题" data-theme-toggle>◐</button>
+        <div class="theme-menu" data-theme-menu>
+          <button class="theme-button" type="button" aria-label="选择主题" aria-expanded="false" data-theme-menu-toggle>Classic</button>
+          <div class="theme-menu-panel" role="menu">
+            <button type="button" role="menuitem" data-theme-option data-style-theme-value="classic" data-theme-value="light">Classic Light</button>
+            <button type="button" role="menuitem" data-theme-option data-style-theme-value="classic" data-theme-value="dark">Classic Dark</button>
+            <button type="button" role="menuitem" data-theme-option data-style-theme-value="index" data-theme-value="light">Index Light</button>
+            <button type="button" role="menuitem" data-theme-option data-style-theme-value="index" data-theme-value="dark">Index Dark</button>
+          </div>
+        </div>
       </header>
       <div data-pagefind-body>
         <slot />
@@ -93,8 +100,11 @@ const searchItems = [
     </div>
     <script is:inline>
       (function () {
-        var themeButton = document.querySelector('[data-theme-toggle]');
-        var styleButton = document.querySelector('[data-style-toggle]');
+        var themeMenu = document.querySelector('[data-theme-menu]');
+        if (!themeMenu) return;
+
+        var themeButton = themeMenu.querySelector('[data-theme-menu-toggle]');
+        var themeOptions = themeMenu.querySelectorAll('[data-theme-option]');
 
         function currentTheme() {
           return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
@@ -104,40 +114,46 @@ const searchItems = [
           return document.documentElement.dataset.styleTheme === 'index' ? 'index' : 'classic';
         }
 
-        function updateThemeButton(theme) {
+        function setOpen(isOpen) {
           if (!themeButton) return;
-          themeButton.textContent = theme === 'dark' ? '☀' : '◐';
-          themeButton.setAttribute('aria-label', theme === 'dark' ? '切换到浅色主题' : '切换到深色主题');
+          themeMenu.classList.toggle('open', isOpen);
+          themeButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         }
 
-        function updateStyleButton(styleTheme) {
-          if (!styleButton) return;
-          styleButton.textContent = styleTheme === 'index' ? 'Classic' : 'Index';
-          styleButton.setAttribute(
-            'aria-label',
-            styleTheme === 'index' ? '切换到 Classic 主题' : '切换到 Index Journal 主题'
-          );
+        function updateThemeButton() {
+          if (!themeButton) return;
+          var label = currentStyleTheme() === 'index' ? 'Index' : 'Classic';
+          var mode = currentTheme() === 'dark' ? ' Dark' : '';
+          themeButton.textContent = label + mode;
         }
 
-        updateThemeButton(currentTheme());
-        updateStyleButton(currentStyleTheme());
+        updateThemeButton();
 
-        if (themeButton) themeButton.addEventListener('click', function () {
-          var nextTheme = currentTheme() === 'dark' ? 'light' : 'dark';
-          document.documentElement.dataset.theme = nextTheme;
-          updateThemeButton(nextTheme);
-          try {
-            localStorage.setItem('theme', nextTheme);
-          } catch (error) {}
+        themeButton.addEventListener('click', function () {
+          setOpen(!themeMenu.classList.contains('open'));
         });
 
-        if (styleButton) styleButton.addEventListener('click', function () {
-          var nextStyleTheme = currentStyleTheme() === 'index' ? 'classic' : 'index';
-          document.documentElement.dataset.styleTheme = nextStyleTheme;
-          updateStyleButton(nextStyleTheme);
-          try {
-            localStorage.setItem('styleTheme', nextStyleTheme);
-          } catch (error) {}
+        themeOptions.forEach(function (option) {
+          option.addEventListener('click', function () {
+            var nextStyleTheme = option.getAttribute('data-style-theme-value') || 'classic';
+            var nextTheme = option.getAttribute('data-theme-value') || 'light';
+            document.documentElement.dataset.styleTheme = nextStyleTheme;
+            document.documentElement.dataset.theme = nextTheme;
+            updateThemeButton();
+            setOpen(false);
+            try {
+              localStorage.setItem('styleTheme', nextStyleTheme);
+              localStorage.setItem('theme', nextTheme);
+            } catch (error) {}
+          });
+        });
+
+        document.addEventListener('keydown', function (event) {
+          if (event.key === 'Escape') setOpen(false);
+        });
+
+        document.addEventListener('click', function (event) {
+          if (!themeMenu.contains(event.target)) setOpen(false);
         });
       })();
     </script>

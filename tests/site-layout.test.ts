@@ -39,11 +39,17 @@ describe('site layout', () => {
   it('keeps the classic theme and adds a switchable index journal theme', () => {
     expect(layoutSource).toContain("localStorage.getItem('styleTheme')");
     expect(layoutSource).toContain("document.documentElement.dataset.styleTheme = savedStyleTheme === 'index' ? 'index' : 'classic'");
-    expect(layoutSource).toContain('data-style-toggle');
-    expect(layoutSource).toContain('Index');
-    expect(layoutSource).toContain('Classic');
+    expect(layoutSource).toContain('data-theme-menu-toggle');
+    expect(layoutSource).toContain('data-theme-option');
+    expect(layoutSource).toContain('Classic Light');
+    expect(layoutSource).toContain('Classic Dark');
+    expect(layoutSource).toContain('Index Light');
+    expect(layoutSource).toContain('Index Dark');
+    expect(layoutSource).not.toContain('data-style-toggle');
+    expect(layoutSource).not.toContain('data-theme-toggle');
     expect(globalCssSource).toContain("html[data-style-theme='index']");
     expect(globalCssSource).toContain('--display-font');
+    expect(globalCssSource).toContain('linear-gradient(135deg, #ece7d8 0%, #f8f1df 46%, #dfe7d6 100%)');
   });
 
   it('keeps navigation compatible with the GitHub Pages base path', () => {
