@@ -16,7 +16,7 @@ describe('site layout', () => {
     expect(layoutSource).toContain("withBase('/projects/')");
     expect(layoutSource).toContain('data-search-toggle>搜索</button>');
     expect(layoutSource).toContain('href={withBase(siteMeta.rssPath)}>RSS</a>');
-    expect(layoutSource).toContain("href={withBase('/about/')}>关于</a>");
+    expect(layoutSource).toContain("href={withBase('/about/')}>关于我</a>");
     expect(layoutSource).not.toContain("withBase('/guides/mdx-content/')");
     expect(layoutSource).not.toContain('>指南</a>');
   });
@@ -34,6 +34,23 @@ describe('site layout', () => {
     expect(globalCssSource).toMatch(/\.nav-search-panel\s*\{[^}]*top:\s*100%;/s);
     expect(globalCssSource).toMatch(/\.nav-search-panel\s*\{[^}]*padding:\s*4px 0 0;/s);
     expect(globalCssSource).toContain('.nav-search-panel::before');
+  });
+
+  it('keeps the classic theme and adds a switchable index journal theme', () => {
+    expect(layoutSource).toContain("localStorage.getItem('styleTheme')");
+    expect(layoutSource).toContain("document.documentElement.dataset.theme = savedTheme === 'dark' ? 'dark' : 'light'");
+    expect(layoutSource).toContain("document.documentElement.dataset.styleTheme = savedStyleTheme === 'classic' ? 'classic' : 'index'");
+    expect(layoutSource).toContain('data-theme-menu-toggle');
+    expect(layoutSource).toContain('data-theme-option');
+    expect(layoutSource).toContain('主题');
+    expect(layoutSource.indexOf('晨曦手札')).toBeLessThan(layoutSource.indexOf('素笺经典'));
+    expect(layoutSource.indexOf('素笺经典')).toBeLessThan(layoutSource.indexOf('秋夜手札'));
+    expect(layoutSource.indexOf('秋夜手札')).toBeLessThan(layoutSource.indexOf('玄墨经典'));
+    expect(layoutSource).not.toContain('data-style-toggle');
+    expect(layoutSource).not.toContain('data-theme-toggle');
+    expect(globalCssSource).toContain("html[data-style-theme='index']");
+    expect(globalCssSource).toContain('--display-font');
+    expect(globalCssSource).toContain('linear-gradient(135deg, #ece7d8 0%, #f8f1df 46%, #dfe7d6 100%)');
   });
 
   it('keeps navigation compatible with the GitHub Pages base path', () => {

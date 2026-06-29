@@ -33,6 +33,20 @@ describe('front page structure', () => {
     expect(aboutSource).toContain('siteMeta.projectUrl');
     expect(aboutSource).toContain('withBase(siteMeta.rssPath)');
     expect(aboutSource).toContain("withBase('/projects/')");
+    expect(aboutSource).toContain('GitHub');
+    expect(aboutSource).toContain('项目仓库');
+    expect(aboutSource).toContain('RSS 订阅');
+    expect(aboutSource).toContain('项目记录');
+  });
+
+  it('keeps migrated about page content and assets', () => {
+    expect(aboutSource).toContain('Automation Builder');
+    expect(aboutSource).toContain('核心技能');
+    expect(aboutSource).toContain('BrianBlog 博客系统');
+    expect(aboutSource).toContain('微信二维码');
+    expect(aboutSource).toContain("withBase('/about-assets/user.png')");
+    expect(aboutSource).toContain("withBase('/about-assets/wx.png')");
+    expect(aboutSource).toContain("withBase('/about-assets/resume.docx')");
   });
 
   it('links article categories and tags to static filter pages', () => {
