@@ -726,14 +726,60 @@ h3 {
 
 .code-preview,
 .article-content pre {
-  background: var(--code);
-  border: 1px solid var(--code-line);
+  background: #18202d;
+  border: 1px solid #3b4658;
   border-radius: var(--radius);
-  color: #dbeafe;
+  color: #e6edf7;
   font: 13px/1.7 "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
   margin: 26px 0 0;
   overflow-x: auto;
   padding: 18px;
+}
+
+.article-content .expressive-code {
+  --ec-brdRad: var(--radius);
+  --ec-brdCol: #3b4658;
+  --ec-codeBg: #18202d;
+  --ec-codeFg: #e6edf7;
+  --ec-codeFontFml: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  --ec-codeFontSize: 13px;
+  --ec-codeLineHt: 1.72;
+  --ec-codePadBlk: 18px;
+  --ec-codePadInl: 22px;
+  --ec-frm-edBg: #18202d;
+  --ec-frm-frameBoxShdCssVal: none;
+  --ec-frm-inlBtnBg: #263142;
+  --ec-frm-inlBtnBgIdleOpa: 0.78;
+  --ec-frm-inlBtnBrd: #4d5a70;
+  --ec-frm-inlBtnBrdOpa: 0.9;
+  margin-top: 26px;
+}
+
+.article-content .expressive-code pre {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.article-content .expressive-code pre > code {
+  color: #e6edf7;
+}
+
+.article-content .expressive-code .ec-line .code {
+  padding-inline: 22px;
+}
+
+.article-content .expressive-code .ec-line .code span {
+  color: var(--0, #e6edf7);
+}
+
+.article-content .expressive-code .copy button {
+  background: #202a39;
+  border-radius: 999px;
+  opacity: 0.82;
+}
+
+.article-content .expressive-code .copy button:hover {
+  background: #2d3a4d;
+  opacity: 1;
 }
 
 .article-row-list {

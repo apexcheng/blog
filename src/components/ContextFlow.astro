@@ -1,0 +1,219 @@
+---
+---
+
+<section class="context-flow" aria-labelledby="context-flow-title">
+  <div class="context-flow__header">
+    <p class="context-flow__eyebrow">AI 基础概念</p>
+    <h2 id="context-flow-title">什么是上下文？</h2>
+    <p>
+      每次问答 / 对话时，聊天工具会把之前的聊天记录一起发给大模型。
+      大模型每次只是接收到「输入」，然后生成「输出」，它本质上没有长期记忆。
+    </p>
+  </div>
+
+  <div class="context-flow__pipeline" aria-label="上下文进入模型的流程">
+    <span>用户输入</span>
+    <b>→</b>
+    <span>聊天工具拼接上下文</span>
+    <b>→</b>
+    <span>大模型</span>
+    <b>→</b>
+    <span>模型输出</span>
+  </div>
+
+  <p class="context-flow__note">每次回复，都会带上之前的聊天记录（上下文）一起发给模型。</p>
+
+  <div class="context-flow__steps">
+    <article class="context-flow__step">
+      <div class="context-flow__badge">1</div>
+      <div class="context-flow__card">
+        <p><strong>用户问：</strong>什么是 LLM？</p>
+      </div>
+    </article>
+
+    <article class="context-flow__step">
+      <div class="context-flow__badge">2</div>
+      <div class="context-flow__card">
+        <p><strong>用户问：</strong>什么是 LLM？</p>
+        <p><strong>模型回：</strong>LLM 是 Large Language Model 的缩写，中文通常称为大语言模型。</p>
+      </div>
+    </article>
+
+    <article class="context-flow__step">
+      <div class="context-flow__badge">3</div>
+      <div class="context-flow__card">
+        <p><strong>用户问：</strong>什么是 LLM？</p>
+        <p><strong>模型回：</strong>LLM 是 Large Language Model 的缩写，中文通常称为大语言模型。</p>
+        <p><strong>用户问：</strong>工作原理是什么样的？</p>
+      </div>
+    </article>
+
+    <article class="context-flow__step">
+      <div class="context-flow__badge">4</div>
+      <div class="context-flow__card">
+        <p><strong>用户问：</strong>什么是 LLM？</p>
+        <p><strong>模型回：</strong>LLM 是 Large Language Model 的缩写，中文通常称为大语言模型。</p>
+        <p><strong>用户问：</strong>工作原理是什么样的？</p>
+        <p><strong>模型回：</strong>输入一段指令时，LLM 会根据它在训练中学到的语言规律，通过数学计算去预测最可能出现的下一个词或句子。</p>
+      </div>
+    </article>
+  </div>
+
+  <div class="context-flow__summary">
+    <strong>核心理解</strong>
+    <p>你看到的是连续对话；模型看到的是：当前这一轮输入 + 被一起附带的历史上下文。</p>
+  </div>
+</section>
+
+<style>
+  .context-flow {
+    margin: 2.5rem 0;
+    padding: clamp(1.25rem, 4vw, 2.5rem);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 28px;
+    background:
+      radial-gradient(circle at 12% 0%, rgba(96, 165, 250, 0.2), transparent 30%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 251, 255, 0.96));
+    box-shadow: 0 22px 60px rgba(15, 23, 42, 0.08);
+  }
+
+  .context-flow__header {
+    text-align: center;
+  }
+
+  .context-flow__eyebrow {
+    margin: 0 0 0.5rem;
+    color: #2563eb;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .context-flow h2 {
+    margin: 0;
+    color: #1e3a8a;
+    font-size: clamp(2rem, 6vw, 4.25rem);
+    letter-spacing: 0.04em;
+  }
+
+  .context-flow__header > p:last-child {
+    max-width: 760px;
+    margin: 1rem auto 0;
+    color: #334155;
+    line-height: 1.85;
+  }
+
+  .context-flow__pipeline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    margin: 2rem 0 1rem;
+  }
+
+  .context-flow__pipeline span {
+    padding: 0.85rem 1rem;
+    border: 1px solid rgba(37, 99, 235, 0.18);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.88);
+    color: #1e3a8a;
+    font-weight: 800;
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.08);
+  }
+
+  .context-flow__pipeline b {
+    color: #2563eb;
+  }
+
+  .context-flow__note {
+    margin: 0 auto 1.75rem;
+    max-width: 720px;
+    color: #2563eb;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .context-flow__steps {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .context-flow__step {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .context-flow__badge {
+    display: grid;
+    width: 2.7rem;
+    height: 2.7rem;
+    place-items: center;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #2563eb, #38bdf8);
+    color: #fff;
+    font-size: 1.15rem;
+    font-weight: 900;
+    box-shadow: 0 12px 28px rgba(37, 99, 235, 0.28);
+  }
+
+  .context-flow__card {
+    padding: 1rem 1.1rem;
+    border: 1px solid rgba(148, 163, 184, 0.26);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .context-flow__card p {
+    margin: 0.45rem 0;
+    color: #0f172a;
+    line-height: 1.75;
+  }
+
+  .context-flow__card strong {
+    color: #1d4ed8;
+  }
+
+  .context-flow__summary {
+    margin-top: 1.25rem;
+    padding: 1.25rem 1.4rem;
+    border: 1px solid rgba(37, 99, 235, 0.24);
+    border-radius: 20px;
+    background: rgba(239, 246, 255, 0.9);
+  }
+
+  .context-flow__summary strong {
+    display: block;
+    margin-bottom: 0.45rem;
+    color: #1d4ed8;
+    font-size: 1.2rem;
+  }
+
+  .context-flow__summary p {
+    margin: 0;
+    color: #1e293b;
+    font-weight: 700;
+    line-height: 1.75;
+  }
+
+  @media (max-width: 640px) {
+    .context-flow__pipeline {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .context-flow__pipeline b {
+      text-align: center;
+      transform: rotate(90deg);
+    }
+
+    .context-flow__step {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+  }
+</style>

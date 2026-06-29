@@ -15,7 +15,7 @@
 文章必须包含模板中的 frontmatter 字段。重点规则：
 
 - `date` 使用 `YYYY-MM-DD`；新文章默认使用创建当天，除非用户指定日期。
-- `category` 只能是 `AI Agent`、`影刀RPA`、`Skill`、`数据处理`。
+- `category` 只能是 `AI Agent`、`影刀RPA`、`Skill`、`数据处理`、`Demo`。
 - 新文章默认保持 `draft: true`、`featured: false`、`private: false`。
 - 只有用户明确说“发布”“确认发布”“把 draft 改成 false”“可以公开”等同等意思时，才可改为 `draft: false`。
 - `private: true` 只表示不公开进入站点页面和索引，不是密码保护。
@@ -26,6 +26,7 @@
 - `影刀RPA`：影刀 RPA、页面自动化、流程维护经验。
 - `Skill`：Codex / Agent Skill、插件能力、可复用提示词和操作规范。
 - `数据处理`：Excel、CSV、清洗、转换、统计、报表和数据流说明。
+- `Demo`：视觉组件、交互效果、页面样式、文章展示方式等演示内容。
 
 ## 写作规则
 
