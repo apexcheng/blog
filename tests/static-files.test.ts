@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 const blogAgentSource = readFileSync('BLOG_AGENT.md', 'utf8');
 const mdxExampleSource = readFileSync('src/content/posts/mdx-code-diagrams.md', 'utf8');
-const publishSource = readFileSync('Publish.md', 'utf8');
+const readmeSource = readFileSync('README.md', 'utf8');
 
 describe('static file download convention', () => {
   it('keeps a public files directory placeholder', () => {
@@ -25,8 +25,8 @@ describe('static file download convention', () => {
   });
 
   it('reminds publish checks that public files are released as static assets', () => {
-    expect(publishSource).toContain('public/files/');
-    expect(publishSource).toContain('没有敏感文件');
-    expect(publishSource).toContain('会被静态发布');
+    expect(readmeSource).toContain('public/files/');
+    expect(readmeSource).toContain('没有敏感文件');
+    expect(readmeSource).toContain('会被静态发布');
   });
 });

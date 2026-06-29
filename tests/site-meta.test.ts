@@ -8,8 +8,7 @@ const siteDataSource = readFileSync(siteDataPath, 'utf8');
 const layoutSource = readFileSync('src/layouts/SiteLayout.astro', 'utf8');
 const aboutSource = readFileSync('src/pages/about.astro', 'utf8');
 const rssSource = readFileSync('src/pages/rss.xml.ts', 'utf8');
-const publishSource = readFileSync('Publish.md', 'utf8');
-const todoSource = readFileSync('TODO.md', 'utf8');
+const readmeSource = readFileSync('README.md', 'utf8');
 
 describe('site metadata', () => {
   it('keeps shared site metadata in one small data file', () => {
@@ -32,12 +31,10 @@ describe('site metadata', () => {
     expect(astroConfigSource).toContain("base: '/blog'");
     expect(siteDataSource).toContain("githubUrl: 'https://github.com/apexcheng'");
     expect(siteDataSource).toContain("projectUrl: 'https://github.com/apexcheng/blog'");
-    expect(publishSource).toContain('上线前检查');
-    expect(publishSource).toContain('RSS 和 sitemap');
-    expect(publishSource).toContain('GitHub Pages');
-    expect(publishSource).toContain('private: true');
-    expect(todoSource).toContain('GitHub Pages');
-    expect(todoSource).toContain('GitHub');
+    expect(readmeSource).toContain('上线前检查');
+    expect(readmeSource).toContain('RSS 和 sitemap');
+    expect(readmeSource).toContain('GitHub Pages');
+    expect(readmeSource).toContain('private: true');
   });
 
   it('keeps the GitHub Pages workflow on the official Astro path', () => {
