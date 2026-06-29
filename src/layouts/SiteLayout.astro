@@ -46,13 +46,12 @@ const pageTitle = title === siteMeta.siteName ? title : `${title} | ${siteMeta.s
         </a>
         <nav class="site-nav" aria-label="主导航">
           <a class:list={[active === 'home' && 'active']} href={withBase('/')}>首页</a>
-          <a class:list={[active === 'articles' && 'active']} href={withBase('/articles/')}>AI Agent</a>
-          <a href={withBase('/articles/')}>RPA</a>
-          <a class:list={[active === 'search' && 'active']} href={withBase('/search/')}>搜索</a>
+          <a class:list={[active === 'articles' && 'active']} href={withBase('/articles/')}>文章</a>
           <a class:list={[active === 'projects' && 'active']} href={withBase('/projects/')}>项目</a>
           <a class:list={[active === 'guides' && 'active']} href={withBase('/guides/mdx-content/')}>指南</a>
-          <a href={withBase('/about/')}>关于</a>
+          <a class:list={[active === 'search' && 'active']} href={withBase('/search/')}>搜索</a>
           <a href={withBase(siteMeta.rssPath)}>RSS</a>
+          <a href={withBase('/about/')}>关于</a>
         </nav>
         <button class="theme-button" type="button" aria-label="切换到深色主题" data-theme-toggle>◐</button>
       </header>
