@@ -1,0 +1,38 @@
+---
+title: "代码块样式实验"
+description: "在视觉实验室里对比 8 种代码块样式，方便选择一种作为博客默认全局风格。"
+date: 2026-06-29
+category: "视觉实验室"
+tags:
+  - "代码块"
+  - "视觉实验室"
+  - "MDX"
+  - "样式选型"
+minutes: 5
+featured: false
+draft: false
+private: false
+---
+
+import CodeBlockStyleShowcase from '../../components/CodeBlockStyleShowcase.astro';
+import HighlightBox from '../../components/HighlightBox.astro';
+
+这篇文章用于对比代码块视觉风格。先看效果，再选择一种作为博客默认 / 全局代码块样式。
+
+<HighlightBox eyebrow="LAB" title="先选风格，再固化全局">
+  下面 8 种样式只是视觉实验，不会改变当前全局代码块样式。选定后再把对应风格迁移到 `src/styles/global.css`。
+</HighlightBox>
+
+## 候选样式
+
+<CodeBlockStyleShowcase />
+
+## 选择建议
+
+如果要作为全站默认代码块，优先看这几个点：
+
+- 长时间阅读是否舒服。
+- 和博客主题是否协调。
+- Python、Bash、配置文件是否都清晰。
+- 手机端横向滚动时是否不刺眼。
+- 复制按钮、行内高亮、代码标题是否还能保持可读。
