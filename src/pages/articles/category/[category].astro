@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import ArticleList from '../../../components/ArticleList.astro';
+import { categoryMetaList, getCategoryMeta, type CategoryName } from '../../../data/categories';
 import SiteLayout from '../../../layouts/SiteLayout.astro';
 import { withBase } from '../../../utils/paths';
 
@@ -8,20 +9,31 @@ export async function getStaticPaths() {
   const allPosts = (await getCollection('posts'))
     .filter((post) => !post.data.draft && !post.data.private)
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-  const categories = Array.from(new Set(allPosts.map((post) => post.data.category)));
-  return categories.map((category) => ({
-    params: { category },
-    props: { category, posts: allPosts.filter((post) => post.data.category === category) },
+  return categoryMetaList.map((category) => ({
+    params: { category: category.name },
+    props: { category: category.name, posts: allPosts.filter((post) => post.data.category === category.name) },
   }));
 }
 
 const { category, posts } = Astro.props;
+const categoryMeta = getCategoryMeta(category as CategoryName);
+const categoryDescriptionLines = categoryMeta?.description.split('\n') ?? [];
 ---
 
 <SiteLayout title={`分类：${category}`} active="articles">
   <main class="page-content">
     <p class="eyebrow">分类</p>
     <h1 class="page-title">{category}</h1>
+    {categoryDescriptionLines.length > 0 && (
+      <p class="page-lead">
+        {categoryDescriptionLines.map((line, index) => (
+          <>
+            {line}
+            {index < categoryDescriptionLines.length - 1 && <br />}
+          </>
+        ))}
+      </p>
+    )}
     <p class="page-lead">共 {posts.length} 篇公开文章。</p>
     <div class="filter-actions">
       <a href={withBase('/articles/')}>返回全部文章</a>

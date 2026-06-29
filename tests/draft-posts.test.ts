@@ -33,8 +33,8 @@ describe('draft and private posts', () => {
     }
   });
 
-  it('keeps new article templates unpublished by default', () => {
-    expect(templateSource).toContain('draft: true');
+  it('keeps new article templates public by default', () => {
+    expect(templateSource).toContain('draft: false');
     expect(templateSource).toContain('private: false');
   });
 });

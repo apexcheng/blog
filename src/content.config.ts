@@ -1,6 +1,7 @@
 import { defineCollection, z } from 'astro:content';
 import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
+import { categories } from './data/categories';
 
 const posts = defineCollection({
   type: 'content',
@@ -8,7 +9,7 @@ const posts = defineCollection({
     title: z.string(),
     description: z.string(),
     date: z.coerce.date(),
-    category: z.enum(['AI Agent', '影刀RPA', 'Skill', '数据处理', '视觉实验室']),
+    category: z.enum(categories),
     tags: z.array(z.string()),
     minutes: z.number(),
     featured: z.boolean().default(false),

@@ -14,8 +14,8 @@ const rssSource = readFileSync('src/pages/rss.xml.ts', 'utf8');
 describe('front page structure', () => {
   it('keeps the home hero as the first-page reading entry', () => {
     expect(homeSource).toContain('<section class="hero-grid">');
-    expect(homeSource).toContain('AI 自动化 · RPA · 工程笔记');
-    expect(homeSource).toContain('记录电商自动化、AI Agent 与编程实践的个人技术博客');
+    expect(homeSource).toContain('生活观察 · 实践复盘 · 系统教程');
+    expect(homeSource).toContain('记录生活判断、工具实践与系统学习的个人博客');
     expect(homeSource).toContain('class="hero-actions"');
     expect(homeSource).toContain("withBase('/articles/')");
     expect(homeSource).toContain("withBase('/projects/')");
@@ -52,7 +52,7 @@ describe('front page structure', () => {
   });
 
   it('links article categories and tags to static filter pages', () => {
-    expect(articlesSource).toContain('/articles/category/${encodeURIComponent(category)}/');
+    expect(articlesSource).toContain('/articles/category/${encodeURIComponent(category.name)}/');
     expect(articlesSource).toContain('/articles/tag/${encodeURIComponent(tag)}/');
     expect(categorySource).toContain('getStaticPaths');
     expect(categorySource).toContain('!post.data.draft');

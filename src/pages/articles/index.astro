@@ -1,13 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
 import ArticleList from '../../components/ArticleList.astro';
+import { categoryMetaList } from '../../data/categories';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import { withBase } from '../../utils/paths';
 
 const posts = (await getCollection('posts'))
   .filter((post) => !post.data.draft && !post.data.private)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const categories = Array.from(new Set(posts.map((post) => post.data.category)));
 const tags = Array.from(new Set(posts.flatMap((post) => post.data.tags))).sort((a, b) => a.localeCompare(b));
 ---
 
@@ -16,9 +16,9 @@ const tags = Array.from(new Set(posts.flatMap((post) => post.data.tags))).sort((
     <aside class="filter-panel">
       <h2>内容分类</h2>
       <a class="active" href={withBase('/articles/')}>全部文章 <span>{posts.length}</span></a>
-      {categories.map((category) => (
-        <a href={withBase(`/articles/category/${encodeURIComponent(category)}/`)}>
-          {category} <span>{posts.filter((post) => post.data.category === category).length}</span>
+      {categoryMetaList.map((category) => (
+        <a href={withBase(`/articles/category/${encodeURIComponent(category.name)}/`)}>
+          {category.name} <span>{posts.filter((post) => post.data.category === category.name).length}</span>
         </a>
       ))}
       <h2 class="filter-subtitle">标签</h2>
@@ -31,8 +31,8 @@ const tags = Array.from(new Set(posts.flatMap((post) => post.data.tags))).sort((
     <section>
       <p class="eyebrow">文章</p>
       <h1 class="page-title">文章列表</h1>
-      <p class="page-lead">按主题、标签和更新时间组织技术内容。列表页保持轻量，重点是快速扫描标题、摘要和主题。</p>
-      <div class="search-placeholder">当前共有 {posts.length} 篇文章、{categories.length} 个分类、{tags.length} 个标签；也可以去 <a href={withBase('/search/')}>搜索页</a> 查找内容。</div>
+      <p class="page-lead">按内容类型、标签和更新时间组织文章。列表页保持轻量，重点是快速扫描标题、摘要和分类。</p>
+      <div class="search-placeholder">当前共有 {posts.length} 篇文章、{categoryMetaList.length} 个分类、{tags.length} 个标签；也可以去 <a href={withBase('/search/')}>搜索页</a> 查找内容。</div>
       <ArticleList posts={posts} />
     </section>
   </main>

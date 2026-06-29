@@ -2,7 +2,7 @@
 title: "从代码看这个博客：项目结构与运行流程"
 description: "从项目目录、页面入口、文章读取、组件渲染、本地运行和 GitHub Pages 发布链路，拆解这个 Astro 博客是怎么跑起来的。"
 date: 2026-06-29
-category: "Skill"
+category: "实践"
 tags:
   - "Astro"
   - "MDX"
@@ -161,7 +161,7 @@ const posts = defineCollection({
     title: z.string(),
     description: z.string(),
     date: z.coerce.date(),
-    category: z.enum(['AI Agent', '影刀RPA', 'Skill', '数据处理']),
+    category: z.enum(['生活', '实践', '教程', '视觉实验室']),
     tags: z.array(z.string()),
     minutes: z.number(),
     featured: z.boolean().default(false),
