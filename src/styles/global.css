@@ -355,8 +355,7 @@ p {
 }
 
 .page-content {
-  margin: 0 auto;
-  max-width: 1440px;
+  margin: 0;
   padding: 68px 6.4vw 90px;
 }
 
@@ -909,10 +908,6 @@ h3 {
   font-weight: 720;
 }
 
-.search-page {
-  max-width: 920px;
-}
-
 .search-panel {
   background: var(--paper);
   border: 1px solid var(--line);
@@ -933,8 +928,7 @@ h3 {
   align-items: start;
   display: grid;
   gap: 44px;
-  grid-template-columns: 260px minmax(0, 1120px);
-  max-width: 1680px;
+  grid-template-columns: 260px minmax(0, 1fr);
 }
 
 .article-sidebar {
@@ -1065,14 +1059,6 @@ h3 {
 .project-page-grid {
   grid-template-columns: repeat(2, 1fr);
   margin-top: 36px;
-}
-
-.narrow-page {
-  max-width: 920px;
-}
-
-.about-page {
-  max-width: 1200px;
 }
 
 .about-hero-grid,

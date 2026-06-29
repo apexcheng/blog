@@ -61,8 +61,15 @@ describe('site layout', () => {
   });
 
   it('keeps mobile layout rules for the main navigation and article page', () => {
-    expect(globalCssSource).toMatch(/\.article-shell\s*\{[^}]*max-width:\s*1680px;/s);
-    expect(globalCssSource).toMatch(/\.article-shell\s*\{[^}]*grid-template-columns:\s*260px minmax\(0,\s*1120px\);/s);
+    const pageContentBlock = globalCssSource.match(/\.page-content\s*\{[^}]*\}/s)?.[0] ?? '';
+    const articleShellBlock = globalCssSource.match(/\.article-shell\s*\{[^}]*\}/s)?.[0] ?? '';
+
+    expect(pageContentBlock).not.toContain('max-width');
+    expect(articleShellBlock).not.toContain('max-width');
+    expect(globalCssSource).not.toMatch(/\.search-page\s*\{[^}]*max-width:/s);
+    expect(globalCssSource).not.toMatch(/\.narrow-page\s*\{[^}]*max-width:/s);
+    expect(globalCssSource).not.toMatch(/\.about-page\s*\{[^}]*max-width:/s);
+    expect(globalCssSource).toMatch(/\.article-shell\s*\{[^}]*grid-template-columns:\s*260px minmax\(0,\s*1fr\);/s);
     expect(globalCssSource).toMatch(/\.article-sidebar\s*\{[^}]*display:\s*grid;[^}]*gap:\s*18px;/s);
     expect(globalCssSource).toContain('@media (max-width: 1100px)');
     expect(globalCssSource).toMatch(/\.article-shell\s*\{[^}]*grid-template-columns:\s*1fr;/s);
