@@ -36,19 +36,26 @@ describe('site layout', () => {
     expect(globalCssSource).toContain('.nav-search-panel::before');
   });
 
-  it('keeps the classic theme and adds a switchable index journal theme', () => {
+  it('keeps the classic theme and adds switchable gradient journal themes', () => {
     expect(layoutSource).toContain("localStorage.getItem('styleTheme')");
     expect(layoutSource).toContain("document.documentElement.dataset.theme = savedTheme === 'dark' ? 'dark' : 'light'");
-    expect(layoutSource).toContain("document.documentElement.dataset.styleTheme = savedStyleTheme === 'classic' ? 'classic' : 'index'");
+    expect(layoutSource).toContain("['index', 'classic', 'index-gradient', 'classic-gradient'].includes(savedStyleTheme)");
+    expect(layoutSource).toContain("document.documentElement.dataset.styleTheme = savedStyleTheme || 'index-gradient'");
     expect(layoutSource).toContain('data-theme-menu-toggle');
     expect(layoutSource).toContain('data-theme-option');
     expect(layoutSource).toContain('主题');
     expect(layoutSource.indexOf('晨曦手札')).toBeLessThan(layoutSource.indexOf('素笺经典'));
-    expect(layoutSource.indexOf('素笺经典')).toBeLessThan(layoutSource.indexOf('秋夜手札'));
-    expect(layoutSource.indexOf('秋夜手札')).toBeLessThan(layoutSource.indexOf('玄墨经典'));
+    expect(layoutSource.indexOf('素笺经典')).toBeLessThan(layoutSource.indexOf('晨曦手札 · 渐变'));
+    expect(layoutSource.indexOf('晨曦手札 · 渐变')).toBeLessThan(layoutSource.indexOf('素笺经典 · 渐变'));
+    expect(layoutSource.indexOf('素笺经典 · 渐变')).toBeLessThan(layoutSource.indexOf('玄墨经典'));
+    expect(layoutSource).not.toContain('秋夜手札');
     expect(layoutSource).not.toContain('data-style-toggle');
     expect(layoutSource).not.toContain('data-theme-toggle');
     expect(globalCssSource).toContain("html[data-style-theme='index']");
+    expect(globalCssSource).toContain("html[data-style-theme='index-gradient']");
+    expect(globalCssSource).toContain("html[data-style-theme='index-gradient'] body");
+    expect(globalCssSource).toContain("html[data-style-theme='classic-gradient']");
+    expect(globalCssSource).toContain("html[data-style-theme='classic-gradient'] body");
     expect(globalCssSource).toContain('--display-font');
     expect(globalCssSource).toContain('linear-gradient(135deg, #ece7d8 0%, #f8f1df 46%, #dfe7d6 100%)');
   });
