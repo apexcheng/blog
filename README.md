@@ -33,7 +33,7 @@ Windows 只作为浏览器预览环境使用，例如访问 `localhost`。
 当前通过 GitHub Actions 自动部署到 GitHub Pages：
 
 ```text
-https://apexcheng.github.io/blog/
+https://apexcheng.github.io/
 ```
 
 发布前在本地确认：
@@ -49,12 +49,12 @@ npm run build
 git push origin main
 ```
 
-GitHub 仓库 Settings → Pages 中 Source 需要选择 GitHub Actions。仓库名以后如果变化，需要同步修改 `astro.config.mjs` 的 `base` 和 `src/data/site.ts` 的项目仓库地址。
+GitHub 仓库 Settings → Pages 中 Source 需要选择 GitHub Actions。当前仓库名是 `apexcheng.github.io`，属于 GitHub 用户站点，部署在根路径 `/`，不需要配置 `base`。
 
 上线前检查：
 
 - 确认 `npm test` 和 `npm run build` 通过。
-- 确认 `astro.config.mjs` 中 `site: 'https://apexcheng.github.io'`、`base: '/blog'` 与当前 GitHub Pages 地址一致。
+- 确认 `astro.config.mjs` 中 `site: 'https://apexcheng.github.io'` 与当前 GitHub Pages 地址一致，且不要保留旧的 `base: '/blog'`。
 - 确认 RSS 和 sitemap 地址使用当前站点配置。
 - 确认 `public/files/` 中没有敏感文件；该目录内容会被静态发布。
 

@@ -17,7 +17,7 @@ const { posts } = Astro.props;
       </div>
       <time datetime={post.data.date.toISOString()}>
         {post.data.date.toISOString().slice(0, 10)}
-        <span>{post.data.minutes} 分钟</span>
+        <span>阅读约 {post.data.minutes} 分钟</span>
       </time>
     </article>
   ))}

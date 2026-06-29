@@ -558,17 +558,19 @@ h3 {
   padding: 24px;
 }
 
-.terminal-body p {
+.hero-code {
   color: inherit;
-  margin: 0 0 4px;
+  margin: 0;
+  overflow-x: auto;
+  white-space: pre;
 }
 
-.prompt {
-  color: #5eead4;
-}
-
-.token {
+.keyword {
   color: #93c5fd;
+}
+
+.function {
+  color: #facc15;
 }
 
 .string {
@@ -577,37 +579,6 @@ h3 {
 
 .comment {
   color: #64748b;
-}
-
-.mini-diagram {
-  background: #111c2f;
-  border: 1px solid #2d3d57;
-  border-radius: var(--radius);
-  margin-top: 22px;
-  padding: 18px;
-}
-
-.mini-diagram b {
-  color: #93c5fd;
-}
-
-.mini-diagram div {
-  display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(3, 1fr);
-  margin-top: 13px;
-}
-
-.mini-diagram span {
-  align-items: center;
-  background: #17243a;
-  border: 1px solid #30425f;
-  border-radius: 7px;
-  color: #dbeafe;
-  display: flex;
-  font-size: 12px;
-  justify-content: center;
-  min-height: 48px;
 }
 
 .section-block {

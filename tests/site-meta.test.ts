@@ -28,9 +28,9 @@ describe('site metadata', () => {
 
   it('documents GitHub Pages site metadata', () => {
     expect(astroConfigSource).toContain("site: 'https://apexcheng.github.io'");
-    expect(astroConfigSource).toContain("base: '/blog'");
+    expect(astroConfigSource).not.toContain('base:');
     expect(siteDataSource).toContain("githubUrl: 'https://github.com/apexcheng'");
-    expect(siteDataSource).toContain("projectUrl: 'https://github.com/apexcheng/blog'");
+    expect(siteDataSource).toContain("projectUrl: 'https://github.com/apexcheng/apexcheng.github.io'");
     expect(readmeSource).toContain('上线前检查');
     expect(readmeSource).toContain('RSS 和 sitemap');
     expect(readmeSource).toContain('GitHub Pages');
