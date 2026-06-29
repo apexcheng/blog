@@ -1,22 +1,6 @@
 # CONTENT_INDEX.md
 
-本文件是博客写作 Agent 的文章索引入口。新增文章、修改文章、审查文章前，先读本文件，再决定需要打开哪些现有文章。
-
-## 使用规则
-
-- 不默认通读 `src/content/posts/` 下所有文章。
-- 根据当前任务，只选择 1 到 3 篇最相关的文章作为参考。
-- 只有用户明确要求全量盘点、统一审查或做整体改版时，才通读全部文章。
-- 如果当前任务只涉及流程规则、模板或 schema，可不额外阅读文章正文。
-
-## 快速选文
-
-- 写视觉笔记 / 组件化技术文章：优先看 `visual-notes-components.mdx`，再按主题补 1 到 2 篇。
-- 写博客架构、内容组织、维护方式：优先看 `blog-project-architecture.mdx`。
-- 写 Agent 工作流、自动化协作：优先看 `automation-agent-workflow.mdx`。
-- 写部署、GitHub Pages、构建链路：优先看 `github-pages-deployment-guide.mdx`。
-- 写网页自动化、选择器、RPA：优先看 `browser-automation-selectors.md`。
-- 写缓存、数据清洗、简单数据流：优先看 `minimal-cache-logic.md`。
+本文件只作为文章索引。需要参考旧文章时，按主题选择 1 到 3 篇正文；不要默认通读全部文章。
 
 ## 文章索引
 

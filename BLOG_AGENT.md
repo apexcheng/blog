@@ -1,159 +1,61 @@
 # BLOG_AGENT.md
 
-本文件给写作 Agent 使用，是本博客写作、审查和发布文章的核心规则。目标是把草稿整理成当前 Astro / MDX / GitHub Pages 静态博客可发布的文章，同时保持最小改动、结构清晰、事实可验证。
+本文件只给写作、审查、发布博客文章使用。Agent 默认先读 `llms.txt`；只有任务涉及文章内容时再读本文件。
 
-写作 Agent 必须先读本文件，再读：
+## 文章来源
 
-```text
-CONTENT_INDEX.md
-ARTICLE_WORKFLOW.md
-templates/post.mdx
-src/content/posts/visual-notes-components.mdx
-```
-
-如果用户要求新增文章，也要读：
-
-```text
-prompts/write-blog-post.md
-```
-
-读完 `CONTENT_INDEX.md` 后，不要默认通读 `src/content/posts/` 下全部文章。新增文章、改文章、审查文章时，只根据当前任务选择 1 到 3 篇最相关的参考文章。
-
-## 内容源规则
-
-`src/content/posts/*.md` / `*.mdx` 是当前文章内容源，由 Agent 或人工直接维护。
-
-新增或修改文章时，推荐流程是：
-
-```text
-复制 templates/post.mdx -> 填写草稿 -> 审查 frontmatter 和视觉结构 -> Astro build
-```
-
-不要写入数据库，不依赖 Django 后端，也不要新增导入 / 导出步骤。
-
-## 文章文件
-
-新文章模板放在：
-
-```text
-templates/post.mdx
-```
-
-新文章默认使用 `.mdx`，优先写成视觉笔记 / 技术说明页。只有用户明确要求纯 Markdown，或文章确实不需要组件时，才使用 `.md`。
-
-新建文章时优先复制这个模板，确认后使用：
-
-```bash
-cp templates/post.mdx src/content/posts/article-slug.mdx
-npm run build
-```
+- 文章内容源是 `src/content/posts/*.md` / `*.mdx`。
+- 新文章默认复制 `templates/post.mdx` 后填写，优先使用 `.mdx`。
+- 新增文章后，同步在 `CONTENT_INDEX.md` 增加或更新一行索引。
+- 需要参考旧文章时，先读 `CONTENT_INDEX.md`，只打开 1 到 3 篇最相关正文。
+- 不写入数据库，不新增导入 / 导出流程，不修改业务代码。
 
 ## Frontmatter
 
-当前文章必须包含这些字段：
+文章必须包含模板中的 frontmatter 字段。重点规则：
 
-```yaml
----
-title: 文章标题
-description: 一句话简介
-date: 2026-06-28
-category: AI Agent
-tags:
-  - Agent
-  - 视觉笔记
-minutes: 8
-featured: false
-draft: true
-private: false
----
-```
+- `date` 使用 `YYYY-MM-DD`；新文章默认使用创建当天，除非用户指定日期。
+- `category` 只能是 `AI Agent`、`影刀RPA`、`Skill`、`数据处理`。
+- 新文章默认保持 `draft: true`、`featured: false`、`private: false`。
+- 只有用户明确说“发布”“确认发布”“把 draft 改成 false”“可以公开”等同等意思时，才可改为 `draft: false`。
+- `private: true` 只表示不公开进入站点页面和索引，不是密码保护。
 
-说明：
+分类选择：
 
-- `title`：文章标题。
-- `description`：文章摘要，尽量短。
-- `date`：发布日期，格式使用 `YYYY-MM-DD`。
-- `category`：文章分类，只能使用固定分类：`AI Agent`、`影刀RPA`、`Skill`、`数据处理`。
-- `tags`：标签数组，保持简短。
-- `minutes`：预计阅读分钟数。
-- `featured`：是否作为精选文章，默认 `false`。
-- `draft`：是否为草稿。新文章默认 `true`，只有用户明确确认发布时才改成 `false`。
-- `private`：静态前台发布边界，默认 `false`。设为 `true` 时不会进入 Astro 首页、文章列表、详情页、RSS 或搜索索引。
-
-## 发布规则
-
-- 新文章默认 `draft: true`，不会出现在列表、首页，也不会生成文章详情页。
-- 写作 Agent 不得自行发布文章。只有用户明确说“发布这篇文章”“把 draft 改成 false”“确认发布”等同等意思时，才可以把 `draft` 改成 `false`。
-- 未获得用户明确确认前，即使文章已完成、测试和构建通过，也必须保持 `draft: true`。
-- 文章密码访问暂不实现；当前 `private: true` 只表示不公开发布，不会生成公开页面。
-
-## 分类规则
-
-文章分类固定为以下四类，不能新增同义分类、英文别名或临时分类：
-
-```text
-AI Agent
-影刀RPA
-Skill
-数据处理
-```
-
-选择方式：
-
-- `AI Agent`：Agent 工作流、工具选择、提示词、自动化协作、模型使用经验。
-- `影刀RPA`：影刀 RPA 项目、流程设计、页面自动化、流程维护经验。
+- `AI Agent`：Agent 工作流、提示词、自动化协作、模型使用经验。
+- `影刀RPA`：影刀 RPA、页面自动化、流程维护经验。
 - `Skill`：Codex / Agent Skill、插件能力、可复用提示词和操作规范。
 - `数据处理`：Excel、CSV、清洗、转换、统计、报表和数据流说明。
 
-如果内容跨多个分类，选择文章主问题对应的一类，其余主题放入 `tags`。
+## 写作规则
 
-## 静态文件下载
+- 默认写成视觉笔记 / 技术说明页，不写成长篇流水账。
+- 开头先给 1 到 2 句结论，再展开指标、流程、模块和细节。
+- 组件只服务于指标、对比、流程、架构、决策或重点结论；不要为了展示效果强行堆组件。
+- 普通说明、列表、代码块继续用 Markdown；代码块必须标注语言。
+- 标题短，信息分层清楚；正文段落尽量短。
+- 不确定的事实写简短 TODO 或向用户确认，不要编造。
 
-可下载文件放在 `public/files/`，文章里用 `/files/` 开头链接：
+常用结构：
 
-```md
-[下载示例文件](/files/example.pdf)
+```text
+一句话结论
+指标概览
+核心路径 / 架构图 / 决策树
+模块分栏
+关键细节
+检查清单 / 结论
 ```
 
-`public/files/` 里的内容都是公开文件，会随静态站点发布。不能放私密资料、账号、token、公司内部文档。private 文章不等于 private 文件，只要文件在 `public/files/` 下就是公开可访问的。
+### 现有视觉组件用法
 
-## 当前可用组件
+- `VisualGrid`：组织 2 到 4 个同类信息块，适合概览、对比、模块拆解。
+- `MetricCard`：放在文章前半部分，展示场景、输入、输出、耗时、风险、结果等高扫描信息。
+- `FeatureCard`：解释一个模块、步骤、角色、场景或能力边界；每张卡只讲一个点。
+- `HighlightBox`：强调关键结论、推荐做法、风险提醒或检查清单；不要连续堆多个高亮框。
+- `DecisionFlow`：表达线性步骤、判断顺序或取舍路径；复杂分支优先用 Mermaid。
 
-### Callout
-
-用于文章中的重点提示。只在 `.mdx` 文件中使用。
-
-```mdx
-import Callout from '../../components/Callout.astro';
-
-<Callout title="注意">
-这里写重点内容。
-</Callout>
-```
-
-`title` 可省略。
-
-### Mermaid
-
-用于流程图、架构图、时序图等。只在 `.mdx` 文件中使用。
-
-```mdx
-import Mermaid from '../../components/Mermaid.astro';
-
-<Mermaid
-  title="流程图标题"
-  caption="一句话说明这张图表达什么。"
-  chart={`flowchart LR
-    A[输入] --> B[处理]
-    B --> C[输出]`}
-/>
-```
-
-图表不要过度复杂；复杂内容优先拆成多张图。
-
-### VisualGrid / MetricCard / FeatureCard / HighlightBox / DecisionFlow
-
-用于把技术文章组织成视觉笔记。只在 `.mdx` 文件中使用。
+常用 import：
 
 ```mdx
 import MetricCard from '../../components/MetricCard.astro';
@@ -161,15 +63,8 @@ import FeatureCard from '../../components/FeatureCard.astro';
 import VisualGrid from '../../components/VisualGrid.astro';
 import HighlightBox from '../../components/HighlightBox.astro';
 import DecisionFlow from '../../components/DecisionFlow.astro';
+import Mermaid from '../../components/Mermaid.astro';
 ```
-
-使用场景：
-
-- `VisualGrid`：承载 2 到 4 列卡片，适合概览、能力对比、模块拆解。
-- `MetricCard`：展示数字、等级、耗时、比例、状态等高扫描价值信息。
-- `FeatureCard`：说明一个能力、模块、步骤或使用场景。
-- `HighlightBox`：强调结论、关键原则、风险提醒或推荐做法。
-- `DecisionFlow`：表达线性步骤、判断路径、取舍过程；复杂分支优先使用 Mermaid。
 
 简短示例：
 
@@ -184,24 +79,6 @@ import DecisionFlow from '../../components/DecisionFlow.astro';
   视觉笔记要让读者先扫到判断、路径和结果，再阅读必要说明。
 </HighlightBox>
 ```
-
-### ProjectCard
-
-`ProjectCard` 当前主要用于项目页，不作为文章写作组件使用。
-
-## 写作规则
-
-- 默认不要写成长篇普通 Markdown。新文章优先写成视觉笔记 / 技术说明页。
-- 不要为了展示效果强行使用组件；组件必须服务于指标、对比、流程、架构、决策或重点结论。
-- 普通说明、列表、代码块仍使用 Markdown；需要指标、对比、流程、架构和重点结论时优先使用 MDX 视觉组件。
-- 技术文章结构建议从结论、指标、流程、模块、关键细节、检查清单中选择需要的部分。
-- 标题短，信息分层清晰，少写大段纯文字。
-- 代码块必须标注语言，例如 `python`、`bash`、`js`。
-- 草稿内容不确定时，保留简短 TODO，不要编造事实。
-
-## 视觉笔记 / 技术说明页风格
-
-AI Agent、影刀 RPA、Skill、数据处理、自动化流程、工具选型等技术文章，默认不要写成普通 Markdown 长文。优先写成“视觉笔记 / 技术说明页”：读者先看到结构、指标、流程和关键判断，再进入细节。
 
 ### 文章结构建议
 
@@ -253,7 +130,7 @@ AI Agent、影刀 RPA、Skill、数据处理、自动化流程、工具选型等
 - 不推荐无结构地连续贴代码、日志或命令输出。
 - 不推荐为了好看强行堆组件；没有指标、对比、流程或重点结论时，保持普通 Markdown 即可。
 
-### 简短示例
+### 完整示例
 
 ```mdx
 import MetricCard from '../../components/MetricCard.astro';
@@ -291,11 +168,27 @@ import Mermaid from '../../components/Mermaid.astro';
 </HighlightBox>
 ```
 
-## 暂未确定
+## 审查规则
 
-以下能力后续再补充，不要提前假设已经支持：
+审查文章时必须检查：
 
-- 图片存放规范。
-- 新文章脚本。
-- 更多未列出的 MDX 组件。
-- 私密文件下载能力。
+- frontmatter 字段完整，分类只使用固定四类之一。
+- 未经用户确认发布的新文章仍是 `draft: true`。
+- 没有账号、token、公司内部资料、私密文件路径等敏感信息。
+- 没有残留模板占位词，例如“待填写”“replace me”“模块一”“模块二”“关键事实一”“关键事实二”。
+- 文章有清晰结构；技术流程、架构或决策类内容优先用图表或分栏表达。
+- Mermaid 图只表达一个问题，节点文字短。
+- 引用 `public/files/` 文件时，确认文件可以公开访问。
+
+## 发布规则
+
+发布必须由用户明确确认。发布时：
+
+1. 再次检查敏感信息和模板占位词。
+2. 将目标文章改为 `draft: false`。
+3. 保持 `private: false`，除非用户明确要求不公开。
+4. 运行 `npm test` 和 `npm run build`。
+
+## 静态文件
+
+可下载文件放在 `public/files/`，文章使用 `/files/` 开头链接。该目录内容都是公开文件，会随站点发布，不能放私密资料；private 文章不等于 private 文件。

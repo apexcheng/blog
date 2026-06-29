@@ -6,6 +6,12 @@
 
 ---
 
+## 文章任务入口
+
+写作、审查、发布博客文章时，先读 `llms.txt` 和 `BLOG_AGENT.md`，再按任务需要读取 `CONTENT_INDEX.md`、模板或相关正文。
+
+---
+
 ## 0. 开发环境约束
 
 本项目位于 WSL Linux 文件系统中，开发时必须优先使用 WSL 环境。
@@ -32,6 +38,7 @@
    export PATH=/home/cheng/.local/bin:/home/cheng/.hermes/node/bin:$PATH
    ```
 6. 不要把 Windows shell、路径转换或编码导致的失败直接判断为项目失败；先确认是否是跨 shell 执行问题。
+7. 如果搜索、读取文件或带管道的命令被 PowerShell 把 `|`、引号或特殊字符拆开，默认先判断为跨 shell 转义 / 引号问题，不要直接推断为文件内容、命令目标或项目代码有问题；应改用更稳的方式在目标环境内重新执行并重新读取后，再继续判断。
 
 ---
 
