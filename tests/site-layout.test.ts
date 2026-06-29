@@ -43,9 +43,9 @@ describe('site layout', () => {
     expect(layoutSource).toContain('data-theme-menu-toggle');
     expect(layoutSource).toContain('data-theme-option');
     expect(layoutSource).toContain('主题');
-    expect(layoutSource.indexOf('Index 浅色')).toBeLessThan(layoutSource.indexOf('Classic 浅色'));
-    expect(layoutSource.indexOf('Classic 浅色')).toBeLessThan(layoutSource.indexOf('Index 深色'));
-    expect(layoutSource.indexOf('Index 深色')).toBeLessThan(layoutSource.indexOf('Classic 深色'));
+    expect(layoutSource.indexOf('晨曦手札')).toBeLessThan(layoutSource.indexOf('素笺经典'));
+    expect(layoutSource.indexOf('素笺经典')).toBeLessThan(layoutSource.indexOf('秋夜手札'));
+    expect(layoutSource.indexOf('秋夜手札')).toBeLessThan(layoutSource.indexOf('玄墨经典'));
     expect(layoutSource).not.toContain('data-style-toggle');
     expect(layoutSource).not.toContain('data-theme-toggle');
     expect(globalCssSource).toContain("html[data-style-theme='index']");
