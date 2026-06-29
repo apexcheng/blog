@@ -6,7 +6,7 @@
 .claude/CLAUDE.md
 ```
 
-如果项目根目录同时存在 `AGENTS.md`，则以根目录 `AGENTS.md` 为主规则入口；本文件用于让 Claude Code 读取同一套核心协作偏好。
+如果项目根目录同时存在 `AGENTS.md`，则以根目录 `AGENTS.md` 为代码 / 工程任务入口；详细规则见 `docs/agent/code-rules.md`。本文件用于让 Claude Code 读取同一套核心协作偏好。
 
 核心目标：**最小改动、简单直接、可读可维护、不猜测、不做无关重构**。
 
@@ -31,7 +31,7 @@
 
 ## 2. 代码生成偏好
 
-遵守项目根目录 `AGENTS.md` 中的规则，尤其是：
+遵守项目根目录 `AGENTS.md` 和 `docs/agent/code-rules.md` 中的规则，尤其是：
 
 1. 只做当前需求直接需要的修改。
 2. 不做无关重构、无关格式化、无关改名。

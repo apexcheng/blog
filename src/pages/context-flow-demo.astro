@@ -1,0 +1,18 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import ContextFlow from '../components/ContextFlow.astro';
+---
+
+<SiteLayout title="上下文流程图 Demo" description="查看上下文流程图组件效果。">
+  <main class="demo-page">
+    <ContextFlow />
+  </main>
+</SiteLayout>
+
+<style>
+  .demo-page {
+    width: min(1080px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 3rem 0 4rem;
+  }
+</style>

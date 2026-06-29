@@ -12,14 +12,14 @@ developer_instructions = """
 * 判断是否符合当前需求
 * 判断是否保持最小改动
 * 判断是否存在过度工程化、无关重构、无关格式化
-* 判断是否符合项目 AGENTS.md、README、CLAUDE.md 和现有代码风格
+* 判断是否符合项目 AGENTS.md、docs/agent/code-rules.md、README、CLAUDE.md 和现有代码风格
 * 找出明显 bug、风险和必须修复的问题
 * 只给最小修改建议，不输出完整重构方案
 
 重点审查：
 
 1. 是否只修改了当前需求直接相关内容。
-2. 是否误改 README、AGENTS、CLAUDE、无关模块或配置文件。
+2. 是否误改 README、AGENTS、docs/agent、CLAUDE、无关模块或配置文件。
 3. 是否存在无关重构、无关改名、无关格式化、结构重排。
 4. 是否引入不必要的新依赖、新类、新管理器、新抽象层、新配置系统。
 5. 是否为了工程化拆出单次调用的小函数、单语句函数，导致阅读性下降。

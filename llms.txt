@@ -1,18 +1,20 @@
 # Agent 入口路由
 
-本文件是本博客给 Agent 使用的唯一入口。开始任务时先读本文件，再按任务类型读取必要文档；不要默认通读所有 Markdown。
+本文件是本博客给 Agent 使用的唯一任务路由入口。开始任务时先读本文件，再按任务类型读取必要文档；不要默认通读所有 Markdown。
 
 ## 读取顺序
 
-1. 写作、审查、发布文章：读 `BLOG_AGENT.md`。
+1. 写作、审查、发布文章：读 `BLOG_AGENT.md`；需要详细规则时再读 `docs/agent/blog-rules.md`。
 2. 需要参考旧文章：再读 `CONTENT_INDEX.md`，只选择 1 到 3 篇相关正文。
 3. 新增文章：再读 `templates/post.mdx`，复制模板后填写。
-4. 修改代码、构建配置、测试或工程结构：读 `AGENTS.md`。
-5. 普通仓库介绍或人工阅读：可读 `README.md`。
+4. 写作任务需要更细的 brief、prompt、审稿或 Skill 化参考时，可按需读 `docs/agent/blog-skills/` 下对应文件；不要默认通读整个目录。
+5. 修改代码、构建配置、测试或工程结构：读 `AGENTS.md`；需要详细规则时再读 `docs/agent/code-rules.md`。
+6. 普通仓库介绍或人工阅读：可读 `README.md`。
 
 ## 边界
 
 - 不默认读取 `src/content/posts/` 下全部文章。
+- 不默认读取 `docs/agent/blog-skills/` 下全部参考材料。
 - 不把模板内容复制进规则文档。
 - 不修改业务代码，除非当前任务明确要求修代码。
 - 不引入新依赖，不做无关重构。

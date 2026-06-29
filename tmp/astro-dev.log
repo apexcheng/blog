@@ -1,0 +1,9 @@
+
+> personal-blog@0.1.0 dev
+> astro dev --host 0.0.0.0
+
+17:51:07 [types] Generated 1ms
+17:51:08 [content] Syncing content
+17:51:08 [content] Astro config changed
+17:51:08 [content] Clearing content store
+17:51:08 [WARN] [starlight-docs-loader] The base directory "/home/cheng/projects/personal-blog/src/content/docs/" does not exist.
