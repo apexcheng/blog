@@ -22,4 +22,5 @@
 | `src/content/posts/blog-code-structure-runtime.mdx` | `Skill` | 项目结构、页面入口、文章读取、组件渲染、本地运行和发布流程 | 写本博客代码结构、运行流程、Astro 项目拆解时参考 |
 | `src/content/posts/browser-automation-selectors.md` | `影刀RPA` | 选择器优先于坐标点击的判断原则 | 写网页自动化、RPA、可验证操作规范时参考 |
 | `src/content/posts/github-pages-deployment-guide.mdx` | `Skill` | GitHub Pages、Astro、Actions 部署流程 | 写部署说明、构建发布、静态站点原理时参考 |
+| `src/content/posts/h-pylori-acid-drink-note.mdx` | `Skill` | 幽门螺杆菌、胃酸过多和气泡饮料的个人判断笔记 | 写生活判断清单、风险边界提醒、个人健康记录类文章时参考 |
 | `src/content/posts/minimal-cache-logic.md` | `数据处理` | 最小抽象、缓存读写、保存时机 | 写数据处理、缓存、显式数据流文章时参考 |
