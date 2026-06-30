@@ -17,10 +17,13 @@ const updateTocActiveState = () => {
     const tocPanel = activeLink && activeLink.closest('.toc-panel');
     if (!activeLink || !tocPanel || tocPanel.scrollHeight <= tocPanel.clientHeight) return;
 
+    const visiblePadding = 12;
     const linkRect = activeLink.getBoundingClientRect();
     const panelRect = tocPanel.getBoundingClientRect();
-    if (linkRect.top < panelRect.top || linkRect.bottom > panelRect.bottom) {
-      activeLink.scrollIntoView({ block: 'nearest' });
+    if (linkRect.top < panelRect.top + visiblePadding) {
+      tocPanel.scrollTop += linkRect.top - panelRect.top - visiblePadding;
+    } else if (linkRect.bottom > panelRect.bottom - visiblePadding) {
+      tocPanel.scrollTop += linkRect.bottom - panelRect.bottom + visiblePadding;
     }
   };
 
