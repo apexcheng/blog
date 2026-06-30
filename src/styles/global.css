@@ -1081,6 +1081,29 @@ h3 {
   line-height: 1.75;
 }
 
+.article-content a {
+  background: linear-gradient(180deg, transparent 58%, rgba(37, 99, 235, 0.18) 0);
+  border-radius: 3px;
+  color: #1d4ed8;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: rgba(37, 99, 235, 0.65);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+}
+
+.article-content a[href^="http"]::after {
+  content: " ↗";
+  font-size: 0.85em;
+}
+
+.article-content a:hover,
+.article-content a:focus {
+  background: rgba(37, 99, 235, 0.16);
+  color: #0f4fc7;
+  outline: 0;
+}
+
 .callout {
   background: var(--paper-soft);
   border-left: 4px solid var(--cyan);
