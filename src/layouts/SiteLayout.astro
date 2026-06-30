@@ -273,7 +273,17 @@ const searchItems = [
       }
 
       .hero-code.has-copy-code {
-        padding-top: 32px;
+        padding-top: 0;
+      }
+
+      .terminal-panel {
+        position: relative;
+      }
+
+      .terminal-panel > .copy-code-button {
+        right: 16px;
+        top: 10px;
+        z-index: 20;
       }
 
       .copy-code-button {
@@ -311,7 +321,9 @@ const searchItems = [
       (function () {
         document.querySelectorAll('pre > code').forEach(function (code) {
           var pre = code.parentElement;
-          if (!pre || pre.closest('.mermaid-card') || pre.querySelector('[data-copy-code]')) return;
+          if (!pre || pre.closest('.mermaid-card')) return;
+          var copyHost = pre.closest('.terminal-panel') || pre;
+          if (copyHost.querySelector('[data-copy-code]')) return;
           pre.classList.add('has-copy-code');
 
           var button = document.createElement('button');
@@ -339,7 +351,7 @@ const searchItems = [
             });
           });
 
-          pre.appendChild(button);
+          copyHost.appendChild(button);
         });
       })();
     </script>
