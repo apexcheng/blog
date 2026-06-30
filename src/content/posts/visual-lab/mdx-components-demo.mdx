@@ -1,0 +1,108 @@
+---
+title: "MDX 文章可视化组件 Demo"
+description: "用提示块、流程步骤、对比表、指标卡和总结块，演示 MDX 如何服务博客文章表达。"
+date: 2026-07-01
+category: "视觉实验室"
+tags:
+  - "MDX"
+  - "视觉笔记"
+  - "组件"
+minutes: 6
+featured: false
+draft: false
+private: false
+---
+
+import Callout from '../../../components/Callout.astro';
+import MetricCard from '../../../components/MetricCard.astro';
+import FeatureCard from '../../../components/FeatureCard.astro';
+import VisualGrid from '../../../components/VisualGrid.astro';
+import HighlightBox from '../../../components/HighlightBox.astro';
+import DecisionFlow from '../../../components/DecisionFlow.astro';
+
+这篇 Demo 给后续 Agent 一个可参考的 MDX 写法：先让文章结构成立，再用少量组件把重点信息摆出来。
+
+<Callout title="提示块">
+  提示块适合放短提醒。它不抢正文位置，只帮读者注意一个边界或前提。
+</Callout>
+
+## 指标卡
+
+<VisualGrid columns={3}>
+  <MetricCard label="适合内容" value="结构化" detail="流程、对比、指标、重点结论更适合用 MDX 表达。" />
+  <MetricCard label="组件数量" value="少量" detail="一篇文章只放真正有用的视觉块。" tone="cyan" />
+  <MetricCard label="维护成本" value="低" detail="复用已有 Astro 组件，不引入新依赖。" tone="green" />
+</VisualGrid>
+
+## 流程步骤
+
+<DecisionFlow
+  title="写 MDX 文章前的判断顺序"
+  items={[
+    {
+      label: 'Step 1',
+      title: '先写清结论',
+      description: '一句话说明文章要解决什么问题，不先堆组件。',
+    },
+    {
+      label: 'Step 2',
+      title: '再找结构',
+      description: '判断内容是不是指标、流程、模块、对比或检查清单。',
+    },
+    {
+      label: 'Step 3',
+      title: '最后选组件',
+      description: '能用 Markdown 说清楚的继续用 Markdown，需要扫描的信息再交给 MDX。',
+    },
+  ]}
+/>
+
+## 模块卡片
+
+<VisualGrid columns={2}>
+  <FeatureCard title="提示和结论" meta="NOTE" description="短提醒用 Callout，文章级重点用 HighlightBox。">
+    <ul>
+      <li>提醒要短</li>
+      <li>结论要明确</li>
+    </ul>
+  </FeatureCard>
+  <FeatureCard title="流程和模块" meta="STRUCTURE" description="线性步骤用 DecisionFlow，同类信息用 VisualGrid 组织。">
+    <ul>
+      <li>每张卡片只讲一个点</li>
+      <li>每组卡片保持同一类型</li>
+    </ul>
+  </FeatureCard>
+</VisualGrid>
+
+## 对比表
+
+简单对比继续用 Markdown 表格，不必为了视觉效果强行写组件。
+
+| 写法 | 适合场景 | 注意事项 |
+| --- | --- | --- |
+| Markdown 段落 | 普通叙述、经验记录、解释性正文 | 最稳定，也最容易维护 |
+| Markdown 表格 | 轻量对比、参数说明、规则清单 | 内容不要太长 |
+| MDX 组件 | 指标、流程、重点结论、模块拆解 | 只在结构真的需要被看见时使用 |
+
+## 总结块
+
+<HighlightBox eyebrow="CHECK" title="MDX 只做必要的可视化">
+  写文章时先用 Markdown 把意思说明白，再用 MDX 强化阅读路径。组件越少，读者越容易看见真正重要的内容。
+</HighlightBox>
+
+## 文章用法片段
+
+```mdx
+import Callout from '../../../components/Callout.astro';
+import MetricCard from '../../../components/MetricCard.astro';
+import VisualGrid from '../../../components/VisualGrid.astro';
+
+<Callout title="提示">
+  先判断这段内容是否真的需要可视化。
+</Callout>
+
+<VisualGrid columns={2}>
+  <MetricCard label="输入" value="素材" detail="文章已有的事实和上下文。" />
+  <MetricCard label="输出" value="结构" detail="读者能快速扫描的阅读路径。" tone="green" />
+</VisualGrid>
+```
