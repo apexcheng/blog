@@ -11,6 +11,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: siteMeta.siteName,
+      favicon: '/favicon.svg',
       locales: {
         root: {
           label: '简体中文',
