@@ -4,9 +4,9 @@ import { withBase } from '../utils/paths';
 const { posts } = Astro.props;
 ---
 
-<div class="article-list">
+<div class="article-list" data-article-list>
   {posts.map((post) => (
-    <article class="article-list-item">
+    <article class="article-list-item" data-article-item data-category={post.data.category}>
       <div>
         <small><a href={withBase(`/articles/category/${encodeURIComponent(post.data.category)}/`)}>{post.data.category}</a></small>
         <h2><a href={withBase(`/articles/${post.slug}/`)}>{post.data.title}</a></h2>

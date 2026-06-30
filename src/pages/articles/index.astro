@@ -8,17 +8,27 @@ import { withBase } from '../../utils/paths';
 const posts = (await getCollection('posts'))
   .filter((post) => !post.data.draft && !post.data.private)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const articlesPageUrl = withBase('/articles/');
+const categoryCounts = Object.fromEntries(
+  categoryMetaList.map((category) => [category.name, posts.filter((post) => post.data.category === category.name).length]),
+);
 const tags = Array.from(new Set(posts.flatMap((post) => post.data.tags))).sort((a, b) => a.localeCompare(b));
 ---
 
 <SiteLayout title="文章列表" active="articles">
-  <main class="page-content two-column-page">
+  <main class="page-content two-column-page" data-articles-page>
     <aside class="filter-panel">
       <h2>内容分类</h2>
-      <a class="active" href={withBase('/articles/')}>全部文章 <span>{posts.length}</span></a>
+      <a class="active" href={articlesPageUrl} data-category-filter data-category-value="" aria-current="page">
+        全部文章 <span>{posts.length}</span>
+      </a>
       {categoryMetaList.map((category) => (
-        <a href={withBase(`/articles/category/${encodeURIComponent(category.name)}/`)}>
-          {category.name} <span>{posts.filter((post) => post.data.category === category.name).length}</span>
+        <a
+          href={`${articlesPageUrl}?category=${encodeURIComponent(category.name)}`}
+          data-category-filter
+          data-category-value={category.name}
+        >
+          {category.name} <span>{categoryCounts[category.name]}</span>
         </a>
       ))}
       <h2 class="filter-subtitle">标签</h2>
@@ -34,6 +44,87 @@ const tags = Array.from(new Set(posts.flatMap((post) => post.data.tags))).sort((
       <p class="page-lead">按内容类型、标签和更新时间组织文章。列表页保持轻量，重点是快速扫描标题、摘要和分类。</p>
       <div class="search-placeholder">当前共有 {posts.length} 篇文章、{categoryMetaList.length} 个分类、{tags.length} 个标签；也可以使用顶部导航里的搜索查找内容。</div>
       <ArticleList posts={posts} />
+      <p class="article-filter-empty" data-empty-state hidden>当前分类暂无公开文章，请切换到其他分类或查看全部文章。</p>
     </section>
   </main>
+  <script is:inline>
+    (function () {
+      var page = document.querySelector('[data-articles-page]');
+      if (!page) return;
+
+      var filters = Array.prototype.slice.call(page.querySelectorAll('[data-category-filter]'));
+      var items = Array.prototype.slice.call(page.querySelectorAll('[data-article-item]'));
+      var list = page.querySelector('[data-article-list]');
+      var emptyState = page.querySelector('[data-empty-state]');
+
+      function setActiveFilter(category) {
+        var activeFilter = null;
+
+        filters.forEach(function (filter) {
+          var isActive = (filter.getAttribute('data-category-value') || '') === category;
+          filter.classList.toggle('active', isActive);
+
+          if (isActive) {
+            filter.setAttribute('aria-current', 'page');
+            activeFilter = filter;
+            return;
+          }
+
+          filter.removeAttribute('aria-current');
+        });
+
+        return activeFilter;
+      }
+
+      function updateLastVisibleItem() {
+        var lastVisibleItem = null;
+
+        items.forEach(function (item) {
+          item.classList.remove('is-filtered-last');
+          if (!item.hidden) lastVisibleItem = item;
+        });
+
+        if (lastVisibleItem) lastVisibleItem.classList.add('is-filtered-last');
+      }
+
+      function applyFilter(category, updateUrl) {
+        var activeFilter = setActiveFilter(category);
+        var visibleCount = 0;
+
+        items.forEach(function (item) {
+          var isVisible = !category || item.getAttribute('data-category') === category;
+          item.hidden = !isVisible;
+          if (isVisible) visibleCount += 1;
+        });
+
+        updateLastVisibleItem();
+
+        if (list) list.hidden = visibleCount === 0;
+        if (emptyState) emptyState.hidden = visibleCount !== 0;
+
+        if (updateUrl && activeFilter) {
+          history.replaceState(null, '', activeFilter.getAttribute('href') || window.location.pathname);
+        }
+      }
+
+      filters.forEach(function (filter) {
+        filter.addEventListener('click', function (event) {
+          event.preventDefault();
+          applyFilter(filter.getAttribute('data-category-value') || '', true);
+        });
+      });
+
+      var initialCategory = '';
+
+      try {
+        var requestedCategory = new URLSearchParams(window.location.search).get('category') || '';
+        var matchedFilter = filters.some(function (filter) {
+          return (filter.getAttribute('data-category-value') || '') === requestedCategory;
+        });
+        if (matchedFilter) initialCategory = requestedCategory;
+      } catch (error) {}
+
+      applyFilter(initialCategory, false);
+    })();
+  </script>
 </SiteLayout>

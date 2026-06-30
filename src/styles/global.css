@@ -972,6 +972,14 @@ h3 {
   border-bottom: 0;
 }
 
+.article-list-item[hidden] {
+  display: none;
+}
+
+.article-list-item.is-filtered-last {
+  border-bottom: 0;
+}
+
 .article-list-item h2 {
   font-size: 23px;
   margin: 8px 0;
@@ -1000,6 +1008,15 @@ h3 {
   color: var(--blue);
   font-size: 14px;
   font-weight: 720;
+}
+
+.article-filter-empty {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--soft);
+  margin-top: 24px;
+  padding: 24px 26px;
 }
 
 .search-panel {
