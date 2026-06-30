@@ -1146,6 +1146,49 @@ h3 {
   outline: 0;
 }
 
+.article-content table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  border-spacing: 0;
+  background: var(--paper);
+  margin: 24px 0;
+}
+
+.article-content th,
+.article-content td {
+  border-right: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 15px;
+  line-height: 1.65;
+  padding: 12px 14px;
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.article-content th {
+  background: var(--paper-soft);
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.article-content tr:last-child td {
+  border-bottom: 0;
+}
+
+.article-content th:last-child,
+.article-content td:last-child {
+  border-right: 0;
+}
+
+.article-content tbody tr:hover td {
+  background: var(--paper-soft);
+}
+
 .callout {
   background: var(--paper-soft);
   border-left: 4px solid var(--cyan);
