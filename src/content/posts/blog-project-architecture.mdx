@@ -89,7 +89,7 @@ import Mermaid from '../../components/Mermaid.astro';
 
 <VisualGrid columns={3}>
   <FeatureCard title="Astro" meta="Core" description="负责内容读取、页面生成和静态构建。" />
-  <FeatureCard title="Starlight" meta="Docs" description="提供文档站基础能力，也保留指南页和搜索入口。" />
+  <FeatureCard title="Starlight" meta="Docs" description="提供文档站基础能力，也保留指南入口的扩展空间。" />
   <FeatureCard title="MDX" meta="Writing" description="让文章可以插入 Astro 组件、卡片和 Mermaid 图表。" />
 </VisualGrid>
 
@@ -104,7 +104,7 @@ import Mermaid from '../../components/Mermaid.astro';
     Home[首页] --> Articles[文章列表]
     Home --> Projects[项目页]
     Home --> About[关于页]
-    Home --> Search[搜索页]
+    Home --> Search[顶部搜索]
     Articles --> Detail[文章详情]
     Articles --> Category[分类页]
     Articles --> Tag[标签页]
@@ -116,7 +116,7 @@ import Mermaid from '../../components/Mermaid.astro';
   <FeatureCard title="首页" meta="入口" description="展示主题方向、精选文章和项目记录，让读者快速知道这里写什么。" />
   <FeatureCard title="文章列表" meta="索引" description="按日期展示公开文章，并连接分类、标签和详情页。" />
   <FeatureCard title="详情页" meta="阅读" description="渲染 Markdown / MDX 正文，同时展示标题、摘要、标签和目录。" />
-  <FeatureCard title="搜索页" meta="检索" description="沿用 Starlight / Pagefind 的静态搜索能力，不需要后端查询服务。" />
+  <FeatureCard title="顶部搜索" meta="检索" description="在导航栏里提供轻量搜索入口，不需要单独维护搜索页面。" />
 </VisualGrid>
 
 ## 内容模型

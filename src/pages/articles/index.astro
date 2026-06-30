@@ -32,7 +32,7 @@ const tags = Array.from(new Set(posts.flatMap((post) => post.data.tags))).sort((
       <p class="eyebrow">文章</p>
       <h1 class="page-title">文章列表</h1>
       <p class="page-lead">按内容类型、标签和更新时间组织文章。列表页保持轻量，重点是快速扫描标题、摘要和分类。</p>
-      <div class="search-placeholder">当前共有 {posts.length} 篇文章、{categoryMetaList.length} 个分类、{tags.length} 个标签；也可以去 <a href={withBase('/search/')}>搜索页</a> 查找内容。</div>
+      <div class="search-placeholder">当前共有 {posts.length} 篇文章、{categoryMetaList.length} 个分类、{tags.length} 个标签；也可以使用顶部导航里的搜索查找内容。</div>
       <ArticleList posts={posts} />
     </section>
   </main>
