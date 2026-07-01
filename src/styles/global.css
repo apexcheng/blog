@@ -1214,7 +1214,10 @@ h3 {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   margin: 22px 0;
+  max-width: 100%;
+  overflow-x: auto;
   padding: 20px;
+  width: fit-content;
 }
 
 .mermaid-title {
@@ -1227,10 +1230,11 @@ h3 {
   border: 0;
   margin: 0;
   padding: 0;
+  width: fit-content;
 }
 
 .mermaid-card svg {
-  max-width: 100%;
+  max-width: none;
 }
 
 .mermaid-caption {
