@@ -1148,12 +1148,13 @@ h3 {
 
 .article-content table {
   display: block;
-  width: 100%;
+  width: fit-content;
   max-width: 100%;
   overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   border-spacing: 0;
+  table-layout: auto;
   background: var(--paper);
   margin: 24px 0;
 }
